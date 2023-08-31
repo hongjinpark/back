@@ -1,7 +1,6 @@
 package com.example.back.controller;
 
 import com.example.back.dto.UserInfoDto;
-import com.example.back.entity.UserInfoEntity;
 import com.example.back.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
