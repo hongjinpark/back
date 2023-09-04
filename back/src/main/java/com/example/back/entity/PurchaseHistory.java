@@ -1,12 +1,18 @@
 package com.example.back.entity;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "purchase_history")
-public class PurchaseHistory extends BaseTimeEntity{
+@NoArgsConstructor
+@Getter
+public class PurchaseHistory extends BaseEntity{
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "purchase_id")
@@ -21,8 +27,4 @@ public class PurchaseHistory extends BaseTimeEntity{
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "product_id")
     private Product product;
-
-
-
-
 }

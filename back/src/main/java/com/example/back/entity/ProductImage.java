@@ -1,10 +1,16 @@
 package com.example.back.entity;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "product_image")
-public class ProductImage extends BaseTimeEntity{
+@NoArgsConstructor
+@Getter
+public class ProductImage extends BaseEntity{
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "pdimage_id")
@@ -15,5 +21,4 @@ public class ProductImage extends BaseTimeEntity{
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     private Product product;
-
 }

@@ -1,10 +1,16 @@
 package com.example.back.entity;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "topic")
-public class Topic extends BaseTimeEntity{
+@Getter
+@NoArgsConstructor
+public class Topic extends BaseEntity{
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "select_product_id")

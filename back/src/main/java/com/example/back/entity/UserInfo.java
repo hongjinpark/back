@@ -1,50 +1,35 @@
 package com.example.back.entity;
-
-import com.example.back.dto.UserInfoDto;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import java.util.Date;
+
+
+/**
+ * 사용자 정보 테이블
+ */
 
 @Entity
-@Table(name = "userinfo")
+@Table(name = "user_info")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class UserInfo {
+public class UserInfo extends BaseEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "userInfo_id")
-    private long id;
-    @Email
-    private String email;
-    private String password;
-    private String nickname;
-    private String status;
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createAt;
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date updateAt;
+    @Column(name = "user_info_id")
+    private Long id;
 
-    @Builder
-    public UserInfo(String email, String password, String nickname, String status){
-        this.email = email;
-        this.password = password;
-        this.nickname = nickname;
-        this.status = status;
-        this.createAt = new Date();
-        this.updateAt = new Date();
-    }
+    @Column(nullable = false)
+    private String status; //N: 탈퇴한 유저 Y: 존재하는 유저
 
-    public UserInfo(UserInfoDto userInfoDto){
-        this.email = userInfoDto.getEmail();
-        this.password = userInfoDto.getPassword();
-        this.nickname = userInfoDto.getNickname();
-        this.status = userInfoDto.getStatus();
-        this.createAt = new Date();
-        this.updateAt = new Date();
-    }
+    @Column(nullable = false)
+    private String phoneNum; //전화번호
+
+    @Column(nullable = false)
+    private String usrNickName; //닉네임
+
+    @Column(nullable = false)
+    private String imgUrl; //프로필 이미지
 }

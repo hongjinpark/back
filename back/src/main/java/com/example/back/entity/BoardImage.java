@@ -1,10 +1,15 @@
 package com.example.back.entity;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "board_image")
-public class BoardImage extends BaseTimeEntity{
+@Getter
+@NoArgsConstructor
+public class BoardImage extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "bdimage_id")
