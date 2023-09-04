@@ -5,6 +5,7 @@ import com.example.back.config.JwtProvider;
 import com.example.back.config.auth.PrincipalDetail;
 import com.example.back.dto.UserDto;
 import com.example.back.entity.User;
+import com.example.back.mapper.UserInfoMapper;
 import com.example.back.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final UserInfoMapper userInfoMapper;
     private final PasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
 
@@ -25,6 +27,13 @@ public class UserService {
 
         userDto.encodePassword(passwordEncoder);
         User user = userDto.toEntity();
+
+        String nickName = user.getNickname();
+        System.out.println("nickName = " + nickName);
+        String status = user.getStatus();
+        System.out.println("status = " + status);
+
+        userInfoMapper.createUserInfo(nickName, status);
 
         //이메일 중복 검사
         validateDuplicateMember(user);
@@ -51,7 +60,6 @@ public class UserService {
     public void deleteUser(String email) {
         userRepository.deleteByEmail(email);
     }
-
 
     private void validateDuplicateMember(User user) {
 

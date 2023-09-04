@@ -1,24 +1,23 @@
-/*
 package com.example.back.dto;
 
 import com.example.back.entity.UserInfo;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.Date;
+
 
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class UserInfoDto {
 
-<<<<<<< Updated upstream
-    public UserInfoDto(UserInfo userInfoEntity) {
-        this.email = userInfoEntity.getEmail();
-        this.password = userInfoEntity.getPassword();
-        this.nickname = userInfoEntity.getNickname();
-        this.status = userInfoEntity.getStatus();
-    }
-=======
->>>>>>> Stashed changes
+    private Long id;
+
+    private String phoneNum; //전화번호
+
+    private String imgUrl; //프로필 이미지
 }
-*/
