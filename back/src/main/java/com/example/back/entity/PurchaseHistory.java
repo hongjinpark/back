@@ -22,9 +22,9 @@ public class PurchaseHistory extends BaseEntity{
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private User user;
+    private User user; // 구매 유저
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "product_id")
-    private Product product;
+    private Product product; // 구매 상품
 }

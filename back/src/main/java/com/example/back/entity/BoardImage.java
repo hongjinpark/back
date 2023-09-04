@@ -15,7 +15,7 @@ public class BoardImage extends BaseEntity{
     @Column(name = "bdimage_id")
     private long id;
 
-    private String bdImgUrl;
+    private String bdImgUrl; // 게시판 이미지 경로
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "board_id")
