@@ -8,14 +8,14 @@
     </settings>
 
     <typeAliases>
-        <typeAlias type="com.example.back.entity.Book" alias="book"/> <!-- Book클래스 alias 등록 -->
-        <typeAlias type="com.spring.jpa_mybatis.entity.Order" alias="order"/> <!-- Person클래스 alias 등록 -->
-        <typeAlias type="com.example.hong.dto.OrderItemDto" alias="OrderItemDto"/>
+        <typeAlias type="com.example.back.dto.ProductDto" alias="ProductDto"/>
+        <typeAlias type="com.example.back.dto.BoardDto" alias="BoardDto"/>
+        <typeAlias type="com.example.back.dto.UserInfoDto" alias="UserInfoDto"/>
     </typeAliases>
 
     <mappers>
-        <mapper resource="mapper/bookmapper.xml" /> <!-- book 매퍼 등록 -->
-        <mapper resource="mapper/ordermapper.xml" /> <!-- person 매퍼 등록 -->
-        <mapper resource="mapper/itemmapper.xml" />
+        <mapper resource="mapper/productmapper.xml" />
+        <mapper resource="mapper/boardmapper.xml" />
+        <mapper resource="mapper/userInfomapper.xml" />
     </mappers>
 </configuration>

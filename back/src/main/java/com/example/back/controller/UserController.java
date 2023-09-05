@@ -3,7 +3,9 @@ package com.example.back.controller;
 
 import com.example.back.config.auth.PrincipalDetail;
 import com.example.back.dto.UserDto;
+import com.example.back.dto.UserInfoDto;
 import com.example.back.entity.User;
+import com.example.back.mapper.UserInfoMapper;
 import com.example.back.service.UserService;
 import lombok.RequiredArgsConstructor;
 
@@ -14,12 +16,17 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.util.List;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/user")
 @RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
+    private final UserInfoMapper userInfoMapper;
 
     //계정 로그인
     @PostMapping("/login")
@@ -51,5 +58,18 @@ public class UserController {
     @DeleteMapping("/delete")
     public void deleteUser(@AuthenticationPrincipal PrincipalDetail principalDetail) {
         userService.deleteUser(principalDetail.getEmail());
+    }
+
+    //계정 정보 조회
+    @GetMapping("/info")
+    public ResponseEntity<?> selectUserInfo() {
+        List<Map<String, Object>> result =  userInfoMapper.selectUserInfo();
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    //계정 정보 수정
+    @PostMapping("/info")
+    public void updateUserInfo(@RequestBody UserInfoDto userInfoDto) {
+        userInfoMapper.updateUserInfo(userInfoDto);
     }
 }

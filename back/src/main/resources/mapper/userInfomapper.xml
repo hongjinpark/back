@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.back.mapper.UserInfoMapper">
+    <select id="selectUserInfo" resultType="HashMap">
+        SELECT *
+        FROM user_info
+    </select>
+
+    <insert id="createUserInfo">
+        INSERT INTO user_info (usr_nick_name, status, phone_num, img_url, reg_time, update_time)
+        VALUES (#{nickName}, #{status}, '', '', now(), now());
+    </insert>
+
+    <update id="updateUserInfo" parameterType="UserInfoDto">
+        UPDATE user_info
+        SET phone_num = #{phoneNum}, img_url = #{imgUrl}, update_time = now()
+        WHERE user_info_id = #{id}
+    </update>
+
+    <!-- delete문 필요없음 -->
+</mapper>
