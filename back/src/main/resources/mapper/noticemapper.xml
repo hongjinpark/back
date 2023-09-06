@@ -6,30 +6,33 @@
 
     <!-- 공지사항 추가 -->
     <insert id="createNotice">
-        INSERT INTO notice ()
-        VALUES ()
+        INSERT INTO notice (reg_time, update_time, notice_contents, notice_title, status)
+        VALUES (now(), now(), #{noticeContents}, #{noticeTitle}, "Y");
     </insert>
 
     <!-- 공지사항 목록 조회 -->
-    <select id="selectNoticeList">
-        SELECT notice_title, update_time
+    <select id="selectNoticeList" resultType="com.example.back.dto.NoticeDto">
+        SELECT notice_title, reg_time
         FROM notice
     </select>
 
     <!-- 공지사항 상세 조회 -->
-    <select id="selectNoticeDetail">
+    <select id="selectNoticeDetail" resultType="com.example.back.dto.NoticeDto" parameterType="Long">
         SELECT *
         FROM notice
+        WHERE notice_id = #{id}
     </select>
 
     <!-- 공지사항 수정 -->
     <update id="updateNotice">
         UPDATE notice
-        SET
+        SET notice_contents = #{noticeContents}, notice_title = #{noticeTitle}, update_time = now()
+        WHERE notice_id = #{id}
     </update>
 
     <!-- 공지사항 삭제 -->
     <delete id="deleteNotice">
-
+        DELETE FROM notice
+        WHERE notice_id = #{id};
     </delete>
 </mapper>
