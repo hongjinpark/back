@@ -44,7 +44,7 @@ public class UserController {
 
     //신규 계정 생성 (회원가입)
     @PostMapping("/new")
-    public User postUser(@RequestBody UserDto userDto) {
+    public User postUser(@Valid @RequestBody UserDto userDto) {
         return userService.createUser(userDto);
     }
 
