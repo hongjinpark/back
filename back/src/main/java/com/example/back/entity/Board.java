@@ -29,11 +29,11 @@ public class Board extends BaseEntity {
     @Column(nullable = false)
     private String bdContents; //게시글 내용
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "region_id")
     private Region region; //게시판 등록 지역
 }

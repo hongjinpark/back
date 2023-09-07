@@ -19,7 +19,7 @@ public class Attention extends BaseEntity{ // 상품 관심
     @Column(name = "status", nullable = false)
     private String status; // N : 관심 비활성화, Y : 관심 활성화
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user; // 관심 누른 사용자
 

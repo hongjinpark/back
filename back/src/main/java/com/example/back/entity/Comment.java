@@ -33,11 +33,11 @@ public class Comment extends BaseEntity {
     @Column(nullable = false)
     private String commentCroup; //댓글 그룹. 0 : 1번째 댓글 1 : 2번째 댓글
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "board_id")
     private Board board;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 }
