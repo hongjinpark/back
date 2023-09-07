@@ -11,11 +11,13 @@
         <typeAlias type="com.example.back.dto.ProductDto" alias="ProductDto"/>
         <typeAlias type="com.example.back.dto.BoardDto" alias="BoardDto"/>
         <typeAlias type="com.example.back.dto.UserInfoDto" alias="UserInfoDto"/>
+        <typeAlias type="com.example.back.dto.NoticeDto" alias="NoticeDto"/>
     </typeAliases>
 
     <mappers>
         <mapper resource="mapper/productmapper.xml" />
         <mapper resource="mapper/boardmapper.xml" />
         <mapper resource="mapper/userInfomapper.xml" />
+        <mapper resource="mapper/noticemapper.xml" />
     </mappers>
 </configuration>
