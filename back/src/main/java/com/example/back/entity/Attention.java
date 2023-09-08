@@ -1,5 +1,7 @@
 package com.example.back.entity;
 
+import com.example.back.dto.AttentionDto;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -26,4 +28,15 @@ public class Attention extends BaseEntity{ // 상품 관심
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     private Product product; // 관심 상품
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    @Builder
+    Attention(String status, User user, Product product){
+        this.status = status;
+        this.user = user;
+        this.product = product;
+    }
 }

@@ -1,6 +1,8 @@
 package com.example.back.entity;
 
 
+import com.example.back.dto.RegionDto;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -36,4 +38,16 @@ public class Region extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    @Builder
+    public Region(String regionName, String leadStatus, String noticeStatus, User user) {
+        this.regionName = regionName;
+        this.leadStatus = leadStatus;
+        this.noticeStatus = noticeStatus;
+        this.user = user;
+    }
 }
