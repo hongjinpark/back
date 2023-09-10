@@ -20,11 +20,11 @@ public class PurchaseHistory extends BaseEntity{
     @Column(name = "status", nullable = false)
     private String status;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user; // 구매 유저
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "product_id")
     private Product product; // 구매 상품
 }

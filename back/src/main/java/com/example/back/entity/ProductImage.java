@@ -18,7 +18,7 @@ public class ProductImage extends BaseEntity{
 
     private String imgUrl; // 상품 이미지 경로
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
 }
