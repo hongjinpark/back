@@ -9,6 +9,7 @@ import com.example.back.mapper.UserInfoMapper;
 import com.example.back.service.UserService;
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -16,6 +17,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
@@ -30,7 +32,7 @@ public class UserController {
 
     //계정 로그인
     @PostMapping("/login")
-    public ResponseEntity<?> loginUser(@RequestBody UserDto userDto) {
+    public ResponseEntity<?> loginUser(@RequestBody UserDto userDto, HttpServletResponse response) {
         UserDto result = userService.loginUser(userDto);
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -38,6 +40,8 @@ public class UserController {
 
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         System.out.println("principal = " + principal);
+        //token header에 추가
+        response.setHeader(HttpHeaders.AUTHORIZATION, result.getToken());
 
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
