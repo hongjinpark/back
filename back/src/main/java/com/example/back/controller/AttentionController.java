@@ -3,12 +3,15 @@ package com.example.back.controller;
 import com.example.back.config.auth.PrincipalDetail;
 //import com.example.back.service.AttentionService;
 import com.example.back.dto.AttentionDto;
+import com.example.back.dto.RegionDto;
 import com.example.back.service.AttentionService;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,5 +25,13 @@ public class AttentionController {
         AttentionDto attentionResult = attentionService.saveAndUpdateAttention(attentionDto);
 
         return ResponseEntity.ok(attentionResult);
+    }
+
+    @GetMapping("/lists")
+    public ResponseEntity<List<AttentionDto>> getAttentionListByUserId(@AuthenticationPrincipal PrincipalDetail principalDetail){
+
+        List<AttentionDto> attentionDtoList = attentionService.selectAttentionListByUserId(principalDetail.getId());
+
+        return ResponseEntity.ok(attentionDtoList);
     }
 }
