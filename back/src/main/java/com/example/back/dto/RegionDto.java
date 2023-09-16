@@ -2,7 +2,9 @@ package com.example.back.dto;
 
 import com.example.back.entity.Region;
 import com.example.back.entity.User;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.FetchType;
@@ -10,6 +12,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class RegionDto {
     private String status; //N : 삭제한 동네 Y : 등록된 동네
     private String regionName; //지역 명칭
