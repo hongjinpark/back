@@ -4,6 +4,7 @@ package com.example.back.entity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
@@ -15,6 +16,7 @@ import javax.persistence.*;
 @Table(name = "product")
 @NoArgsConstructor
 @Getter
+@Setter
 public class Product extends BaseEntity {
 
     @Id
@@ -45,11 +47,11 @@ public class Product extends BaseEntity {
     private Region region;
 
     @ManyToOne
-    @JoinColumn(name = "userInfo_id")
-    private UserInfo userInfo;
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @Builder
-    public Product(String status, String pdTitle, String pdContents, String pdCategory, String price, String hideStatus, Region region, UserInfo userInfo) {
+    public Product(String status, String pdTitle, String pdContents, String pdCategory, String price, String hideStatus, Region region, User user) {
         this.status = status;
         this.pdTitle = pdTitle;
         this.pdContents = pdContents;
@@ -57,6 +59,6 @@ public class Product extends BaseEntity {
         this.price = price;
         this.hideStatus = hideStatus;
         this.region = region;
-        this.userInfo = userInfo;
+        this.user = user;
     }
 }
