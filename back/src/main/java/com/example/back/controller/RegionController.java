@@ -28,6 +28,7 @@ public class RegionController {
     @PostMapping
     public ResponseEntity<RegionDto> saveAndUpdateRegion(@AuthenticationPrincipal PrincipalDetail principalDetail
             , @RequestBody RegionDto regionDto){
+        regionDto.setUserId(principalDetail.getId());
         RegionDto regionResult = regionService.saveAndUpdateRegion(regionDto);
         return ResponseEntity.ok(regionResult);
     }
