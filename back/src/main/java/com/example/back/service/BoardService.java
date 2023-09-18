@@ -1,5 +1,6 @@
 package com.example.back.service;
 
+import com.example.back.config.auth.PrincipalDetail;
 import com.example.back.dto.BoardDto;
 import com.example.back.dto.BoardListDto;
 import com.example.back.entity.Board;
@@ -25,12 +26,12 @@ public class BoardService {
     private final RegionRepository regionRepository;
 
     @Transactional
-    public BoardDto createBoard(BoardDto boardDto) {
+    public BoardDto createBoard(BoardDto boardDto, PrincipalDetail principalDetail) {
 
-        User user = userRepository.findById(boardDto.getUserId())
+        User user = userRepository.findById(principalDetail.getId())
                 .orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + boardDto.getUserId()));
 
-        Region region = regionRepository.findById(boardDto.getRegionId())
+        Region region = regionRepository.findById(principalDetail.getId())
                 .orElseThrow(() -> new IllegalArgumentException("Region not found with ID: " + boardDto.getRegionId()));
 
         Board board= boardRepository.findByUserAndRegion(user, region)
@@ -41,6 +42,7 @@ public class BoardService {
                         .user(user)
                         .region(region)
                         .build());
+
         boardRepository.save(board);
 
         return new BoardDto(board, user, region);

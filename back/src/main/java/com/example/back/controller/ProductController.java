@@ -22,9 +22,9 @@ public class ProductController {
     @PostMapping("/new")
     public ResponseEntity createProduct(@RequestBody ProductDto productDto, @AuthenticationPrincipal PrincipalDetail principalDetail) {
 
-        ProductDto pdDto = productService.createProduct(productDto);
+        ProductDto pdDto = productService.createProduct(productDto, principalDetail);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(pdDto);
     }
 
     @GetMapping("/lists") //user에 따른 상품 조회

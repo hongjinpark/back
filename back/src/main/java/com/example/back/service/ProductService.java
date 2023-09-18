@@ -1,5 +1,6 @@
 package com.example.back.service;
 
+import com.example.back.config.auth.PrincipalDetail;
 import com.example.back.dto.ProductDto;
 import com.example.back.dto.ProductListDto;
 import com.example.back.entity.Product;
@@ -27,11 +28,11 @@ public class ProductService {
     private final UserRepository userRepository;
 
     @Transactional
-    public ProductDto createProduct(ProductDto productDto) {
-        Region region = regionRepository.findById(productDto.getRegionId())
+    public ProductDto createProduct(ProductDto productDto, PrincipalDetail principalDetail) {
+        Region region = regionRepository.findById(principalDetail.getId())
                 .orElseThrow(() -> new IllegalArgumentException("Region not found with ID : " + productDto.getRegionId()));
 
-        User user = userRepository.findById(productDto.getUserId())
+        User user = userRepository.findById(principalDetail.getId())
                 .orElseThrow(() -> new IllegalArgumentException("UserInfo not found with ID : " + productDto.getUserId()));
 
         Product product = productRepository.findByRegionAndUser(region, user)

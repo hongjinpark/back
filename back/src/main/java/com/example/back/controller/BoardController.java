@@ -4,15 +4,16 @@ import com.example.back.config.auth.PrincipalDetail;
 import com.example.back.dto.BoardDto;
 import com.example.back.dto.BoardListDto;
 import com.example.back.entity.Board;
-import com.example.back.repository.BoardRepository;
-import com.example.back.repository.RegionRepository;
-import com.example.back.repository.UserRepository;
 import com.example.back.service.BoardService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -20,16 +21,13 @@ import java.util.List;
 @RequestMapping("/board")
 public class BoardController {
     private final BoardService boardService;
-    private final UserRepository userRepository;
-    private final RegionRepository regionRepository;
-    private final BoardRepository boardRepository;
 
     @PostMapping("/new") //board 생성
     public ResponseEntity createBoard(@RequestBody BoardDto boardDto, @AuthenticationPrincipal PrincipalDetail principalDetail){
 
-        BoardDto boardDto_new = boardService.createBoard(boardDto);
+        BoardDto boardDto_new = boardService.createBoard(boardDto, principalDetail);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(boardDto_new);
     }
 
     @GetMapping("/lists") //user에 따른 조회
@@ -52,6 +50,18 @@ public class BoardController {
         boardService.deleteBoard(boardId);
 
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/upload")
+    public ResponseEntity upload(@RequestPart(value="file",required = false) MultipartFile file) {
+        String originalFileName = file.getOriginalFilename();
+        File destination = new File("upload/dir" + originalFileName);
+        try {
+            file.transferTo(destination);
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(originalFileName);
+        }
+        return ResponseEntity.status(HttpStatus.CREATED).body(originalFileName);
     }
 
 }
