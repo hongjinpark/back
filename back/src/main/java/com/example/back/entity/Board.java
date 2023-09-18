@@ -1,5 +1,6 @@
 package com.example.back.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,22 +35,20 @@ public class Board extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "region_id")
+    @JsonIgnore
     private Region region; //게시판 등록 지역
 
-    @Column(name = "view_cnt")
-    private Integer viewCnt;
-
     @Builder
-    public Board(Long id, String status, String bdSubject, String bdContents, User user, Integer viewCnt) {
-        this.id = id;
+    public Board(String status, String bdSubject, String bdContents, User user, Region region) {
         this.status = status;
         this.bdSubject = bdSubject;
         this.bdContents = bdContents;
         this.user = user;
-        this.viewCnt = viewCnt;
+        this.region = region;
     }
 }
