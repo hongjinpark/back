@@ -1,6 +1,7 @@
 package com.example.back.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -44,10 +45,12 @@ public class Product extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "region_id")
+    @JsonIgnore
     private Region region;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     private User user;
 
     @Builder

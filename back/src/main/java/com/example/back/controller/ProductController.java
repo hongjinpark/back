@@ -2,6 +2,7 @@ package com.example.back.controller;
 
 import com.example.back.config.auth.PrincipalDetail;
 import com.example.back.dto.ProductDto;
+import com.example.back.dto.ProductListDto;
 import com.example.back.entity.Product;
 import com.example.back.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +11,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -21,28 +21,32 @@ public class ProductController {
 
     @PostMapping("/new")
     public ResponseEntity createProduct(@RequestBody ProductDto productDto, @AuthenticationPrincipal PrincipalDetail principalDetail) {
+
         ProductDto pdDto = productService.createProduct(productDto);
 
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/lists") //Product 조회
-    public List<Product> listAllProducts() {
-        return productService.listProducts();
+    @GetMapping("/lists") //user에 따른 상품 조회
+    public ResponseEntity<List<ProductListDto>> getProductById(@AuthenticationPrincipal PrincipalDetail principalDetail) {
+
+        List<ProductListDto> pdDtoList = productService.getProductById(principalDetail.getId());
+
+        return ResponseEntity.ok(pdDtoList);
     }
 
-    @GetMapping("/{id}") //id에 따른 상품 조회
-    public ResponseEntity<Product> getProductById(@PathVariable Long id) {
-        return productService.getProductById(id);
+
+    @PutMapping("/lists/{pdId}") //상품 수정
+    public ResponseEntity<Product> updateProduct(@PathVariable Long pdId, @RequestBody Product productDetails) {
+
+        return productService.updateProduct(pdId, productDetails);
     }
 
-    @PutMapping("/{id}") //id에 따른 board 수정
-    public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product productDetails) {
-        return productService.updateProduct(id, productDetails);
-    }
+    @DeleteMapping("/lists/{pdId}") //상품 삭제
+    public ResponseEntity<Object> deleteProduct(@PathVariable Long pdId) {
 
-    @DeleteMapping("/{id}") //board 삭제
-    public ResponseEntity<Map<String, Boolean>> deleteProduct(@PathVariable Long id) {
-        return productService.deleteProduct(id);
+        productService.deleteProduct(pdId);
+
+        return ResponseEntity.ok().build();
     }
 }
