@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 상품 테이블
@@ -49,6 +51,9 @@ public class Product extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private List<ProductImage> productImages = new ArrayList<>();
 
     @Builder
     public Product(String status, String pdTitle, String pdContents, String pdCategory, String price, String hideStatus, Region region, User user) {

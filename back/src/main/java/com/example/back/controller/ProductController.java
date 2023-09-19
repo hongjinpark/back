@@ -2,6 +2,7 @@ package com.example.back.controller;
 
 import com.example.back.config.auth.PrincipalDetail;
 import com.example.back.dto.ProductDto;
+import com.example.back.dto.RequestProduct;
 import com.example.back.entity.Product;
 import com.example.back.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -44,5 +45,15 @@ public class ProductController {
     @DeleteMapping("/{id}") //board 삭제
     public ResponseEntity<Map<String, Boolean>> deleteProduct(@PathVariable Long id) {
         return productService.deleteProduct(id);
+    }
+
+    @PostMapping("/testnew")
+    public ResponseEntity<String> PostTest(@RequestBody RequestProduct productDto, @AuthenticationPrincipal PrincipalDetail principalDetail){
+        productDto.setUserId(principalDetail.getId());
+        productDto.setStatus("Y");
+        productDto.setHideStatus("N");
+        productDto.setPdCategory("Category");
+        productService.saveTestProduct(productDto);
+        return ResponseEntity.ok("S");
     }
 }

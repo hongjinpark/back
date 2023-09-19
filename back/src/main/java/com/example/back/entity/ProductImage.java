@@ -21,4 +21,9 @@ public class ProductImage extends BaseEntity{
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
+
+    public ProductImage(String imgUrl, Product product){
+        this.imgUrl = imgUrl;
+        this.product = product;
+    }
 }

@@ -1,7 +1,10 @@
 package com.example.back.service;
 
 import com.example.back.dto.ProductDto;
+import com.example.back.dto.RequestProduct;
+import com.example.back.dto.RequestProductImg;
 import com.example.back.entity.Product;
+import com.example.back.entity.ProductImage;
 import com.example.back.entity.Region;
 import com.example.back.entity.User;
 import com.example.back.repository.ProductRepository;
@@ -13,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -81,5 +85,31 @@ public class ProductService {
         Map <String, Boolean> response = new HashMap<>();
         response.put("deleted", Boolean.TRUE);
         return ResponseEntity.ok(response);
+    }
+
+    public void saveTestProduct(RequestProduct requestProduct){
+        User user = userRepository.findById(requestProduct.getUserId())
+                .orElseThrow(() -> new IllegalArgumentException("User not found with ID : " + requestProduct.getUserId()));
+
+        Region region = regionRepository.findByUserAndAndRegionName(user, requestProduct.getRegion())
+                .orElseThrow(() -> new IllegalArgumentException("Region not found with RegionName : " + requestProduct.getRegion()));
+
+
+        Product product = Product.builder()
+                .pdTitle(requestProduct.getPdTitle())
+                .pdContents(requestProduct.getPdContents())
+                .pdCategory(requestProduct.getPdCategory())
+                .price(requestProduct.getPrice())
+                .status(requestProduct.getStatus())
+                .hideStatus(requestProduct.getHideStatus())
+                .user(user)
+                .region(region)
+                .build();
+        for(RequestProductImg productImg : requestProduct.getImages()){
+            ProductImage productImage = new ProductImage(productImg.getUrl(), product);
+            product.getProductImages().add(productImage);
+        }
+        productRepository.save(product);
+
     }
 }
