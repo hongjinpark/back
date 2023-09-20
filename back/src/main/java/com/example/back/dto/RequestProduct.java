@@ -1,16 +1,15 @@
 package com.example.back.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.validation.constraints.NotEmpty;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Setter
+@Builder
 public class RequestProduct {
     @NotEmpty(message = "상품 제목은 필수 입력 값 입니다.")
     private String pdTitle; //상품 제목
@@ -26,7 +25,7 @@ public class RequestProduct {
 
     private String status;
 
-    private RequestProductImg[] images;
+    private List<RequestProductImg> images;
     //기본값 : N
     private String hideStatus; //판매 완료된 상품 중 N: 숨기지 않음 Y: 숨김
 
