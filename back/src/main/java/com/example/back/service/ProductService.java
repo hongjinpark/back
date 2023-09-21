@@ -1,8 +1,10 @@
 package com.example.back.service;
 
+import com.example.back.config.auth.PrincipalDetail;
 import com.example.back.dto.ProductDto;
 import com.example.back.dto.RequestProduct;
 import com.example.back.dto.RequestProductImg;
+import com.example.back.dto.ProductListDto;
 import com.example.back.entity.Product;
 import com.example.back.entity.ProductImage;
 import com.example.back.entity.Region;
@@ -18,8 +20,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -28,12 +31,13 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final RegionRepository regionRepository;
     private final UserRepository userRepository;
+
     @Transactional
-    public ProductDto createProduct(ProductDto productDto) {
-        Region region = regionRepository.findById(productDto.getRegionId())
+    public ProductDto createProduct(ProductDto productDto, PrincipalDetail principalDetail) {
+        Region region = regionRepository.findById(principalDetail.getId())
                 .orElseThrow(() -> new IllegalArgumentException("Region not found with ID : " + productDto.getRegionId()));
 
-        User user = userRepository.findById(productDto.getUserId())
+        User user = userRepository.findById(principalDetail.getId())
                 .orElseThrow(() -> new IllegalArgumentException("UserInfo not found with ID : " + productDto.getUserId()));
 
         Product product = productRepository.findByRegionAndUser(region, user)
@@ -55,17 +59,19 @@ public class ProductService {
         return new ProductDto(product, region, user);
     }
 
-    public List<Product> listProducts() {
-        return productRepository.findAll();
+    @Transactional
+    public List<ProductListDto> getProductById(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("User not exist with ID : " + id));
+
+        List<Product> productList = productRepository.findAllByUser(user).orElse(Collections.emptyList());
+
+        return productList.stream()
+                .map(product -> new ProductListDto(product, user))
+                .collect(Collectors.toList());
     }
 
-    public ResponseEntity<Product> getProductById(@PathVariable Long id) {
-        Product product = productRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Product not exist with id :" + id));
-
-        return ResponseEntity.ok(product);
-    }
-
+    @Transactional
     public ResponseEntity<Product> updateProduct(@PathVariable Long id, Product productDetails) {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Product not exist with id :" + id));
@@ -73,18 +79,16 @@ public class ProductService {
         product.setPdTitle(productDetails.getPdTitle());
         product.setPdContents(productDetails.getPdContents());
 
+
+
         Product updatedProduct = productRepository.save(product);
         return ResponseEntity.ok(updatedProduct);
     }
 
-    public ResponseEntity<Map<String, Boolean>> deleteProduct(@PathVariable Long id) {
-        Product product = productRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Product not exist with id :" + id));
+    @Transactional
+    public void deleteProduct(Long pdId) {
 
-        productRepository.delete(product);
-        Map <String, Boolean> response = new HashMap<>();
-        response.put("deleted", Boolean.TRUE);
-        return ResponseEntity.ok(response);
+        productRepository.deleteById(pdId);
     }
 
     public void saveTestProduct(RequestProduct requestProduct){

@@ -1,8 +1,5 @@
 package com.example.back.dto;
 
-
-import com.example.back.constant.Role;
-import com.example.back.entity.Board;
 import com.example.back.entity.Product;
 import com.example.back.entity.Region;
 import com.example.back.entity.User;
@@ -11,8 +8,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 
 @Getter
@@ -33,8 +28,8 @@ public class ProductDto {
     @NotEmpty(message = "상품 가격은 필수 입력 값 입니다.")
     private String price; //상품 가격
 
-    private String status;
-    //기본값 : N
+    private String status; //기본값 : N
+
     private String hideStatus; //판매 완료된 상품 중 N: 숨기지 않음 Y: 숨김
 
     private Long userId;
@@ -51,5 +46,4 @@ public class ProductDto {
         this.status = product.getStatus();
         this.hideStatus = product.getHideStatus();
     }
-
 }
