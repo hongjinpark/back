@@ -95,8 +95,10 @@ public class SecurityConfig {
                 .antMatchers("/token/**").permitAll()
                 .anyRequest().denyAll()
                 .and()*/
+
 //                .authorizeRequests().antMatchers("/region/*").hasRole("USER")
 //                .and()
+//                .authorizeRequests().antMatchers("/region/*").hasRole("USER").and()
                 .logout().logoutSuccessUrl("/") //logout 요청시 홈으로 이동 - 기본 logout url = "/logout"
                 .and()
                 .oauth2Login()

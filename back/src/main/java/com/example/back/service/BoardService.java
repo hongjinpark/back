@@ -1,41 +1,75 @@
 package com.example.back.service;
 
+import com.example.back.config.auth.PrincipalDetail;
+import com.example.back.dto.BoardDto;
+import com.example.back.dto.BoardListDto;
 import com.example.back.entity.Board;
+import com.example.back.entity.Region;
+import com.example.back.entity.User;
 import com.example.back.repository.BoardRepository;
+import com.example.back.repository.RegionRepository;
+import com.example.back.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
 public class BoardService {
     private final BoardRepository boardRepository;
+    private final UserRepository userRepository;
+    private final RegionRepository regionRepository;
 
-    public Board createBoard(@RequestBody Board board) {
-        return boardRepository.save(board);
+    @Transactional
+    public BoardDto createBoard(BoardDto boardDto, PrincipalDetail principalDetail) {
+
+        User user = userRepository.findById(principalDetail.getId())
+                .orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + boardDto.getUserId()));
+
+        Region region = regionRepository.findById(principalDetail.getId())
+                .orElseThrow(() -> new IllegalArgumentException("Region not found with ID: " + boardDto.getRegionId()));
+
+        Board board= boardRepository.findByUserAndRegion(user, region)
+                .orElse(Board.builder()
+                        .bdSubject(boardDto.getBdSubject())
+                        .bdContents(boardDto.getBdContents())
+                        .status(boardDto.getStatus())
+                        .user(user)
+                        .region(region)
+                        .build());
+
+        boardRepository.save(board);
+
+        return new BoardDto(board, user, region);
     }
 
-    public List<Board> listAllBoards() {
-        return boardRepository.findAll();
+    @Transactional
+    public List<BoardListDto> getBoardById(Long id) {
+
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("User not exist with ID : " + id));
+
+        List<Board> boardList = boardRepository.findAllByUser(user).orElse(Collections.emptyList());
+
+
+        return boardList.stream()
+                .map(board -> new BoardListDto(board, user))
+                .collect(Collectors.toList());
+
+
     }
 
-    public ResponseEntity<Board> getBoardById(@PathVariable Long id) {
-        Board board = boardRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Board not exist with id :" + id));
 
-        int cnt = board.getViewCnt();
-        board.setViewCnt(cnt + 1);
+    @Transactional
+    public ResponseEntity<Board> updateBoard(@PathVariable Long boardId, Board boardDetails) {
 
-        return ResponseEntity.ok(board);
-    }
-
-    public ResponseEntity<Board> updateBoard(@PathVariable Long id, @RequestBody Board boardDetails) {
-        Board board = boardRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Board not exist with id :" + id));
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(() -> new IllegalArgumentException("Board not exist with ID :" + boardId));
 
         board.setBdSubject(boardDetails.getBdSubject());
         board.setBdContents(boardDetails.getBdContents());
@@ -44,14 +78,9 @@ public class BoardService {
         return ResponseEntity.ok(updatedBoard);
     }
 
-    // delete board
-    public ResponseEntity<Map<String, Boolean>> deleteBoard(@PathVariable Long id) {
-        Board board = boardRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Board not exist with id :" + id));
+    @Transactional
+    public void deleteBoard(Long boardId) {
 
-        boardRepository.delete(board);
-        Map <String, Boolean> response = new HashMap<>();
-        response.put("deleted", Boolean.TRUE);
-        return ResponseEntity.ok(response);
+        boardRepository.deleteById(boardId);
     }
 }
