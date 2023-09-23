@@ -31,9 +31,9 @@ public class NoticeController {
     }
 
     //공지사항 상세보기 조회
-    @GetMapping("/{noticeId}")
-    public ResponseEntity<?> detailNotice(@PathVariable Long noticeId) {
-        Map<String, Object> result = noticeMapper.selectNoticeDetail(noticeId);
+    @GetMapping("/{id}")
+    public ResponseEntity<?> detailNotice(@PathVariable Long id) {
+        Map<String, Object> result = noticeMapper.selectNoticeDetail(id);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
@@ -45,8 +45,8 @@ public class NoticeController {
     }
 
     //공지사항 삭제
-    @DeleteMapping("/{noticeId}")
-    public void deleteNotice(@PathVariable Long noticeId) {
-        noticeMapper.deleteNotice(noticeId);
+    @DeleteMapping("/{id}")
+    public void deleteNotice(@PathVariable Long id) {
+        noticeMapper.deleteNotice(id);
     }
 }

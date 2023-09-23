@@ -20,7 +20,7 @@
     <select id="selectNoticeDetail" resultType="HashMap" parameterType="Long">
         SELECT *
         FROM notice
-        WHERE notice_id = #{noticeId}
+        WHERE notice_id = #{id}
     </select>
 
     <!-- 공지사항 수정 -->
@@ -35,6 +35,6 @@
     <!-- 공지사항 삭제 -->
     <delete id="deleteNotice">
         DELETE FROM notice
-        WHERE notice_id = #{noticeId};
+        WHERE notice_id = #{id};
     </delete>
 </mapper>
