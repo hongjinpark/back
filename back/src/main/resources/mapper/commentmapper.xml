@@ -5,18 +5,18 @@
 <mapper namespace="com.example.back.mapper.CommentMapper">
 
     <!-- 댓글 조회 -->
-    <insert id="selectComment">
-        SELECT c.contents, c.update_time, c.cmlayer, c.comment_croup, u.nickname, b.board_id
-        FROM comment c
-        INNER JOIN board b on c.board_id = b.board_id
-        INNER JOIN user u on b.user_id = u.user_id
-        WHERE c.board_id = #{id};
-    </insert>
+    <select id="selectComment" resultType="hashmap">
+        SELECT c.contents
+        FROM board b
+        INNER JOIN comment c
+        ON b.board_id = c.board_id
+        WHERE b.board_id = #{id};
+    </select>
 
     <!-- 댓글 추가 -->
     <insert id="createComment">
-        INSERT INTO comment(reg_time, update_time, cmlayer, comment_croup, contents, status)
-             VALUES (now(), now(), 0, #{comment_croup}, #{contents}, "Y")
+        INSERT INTO comment(reg_time, update_time, cmlayer, comment_group, contents, status, board_id, user_id)
+             VALUES (now(), now(), 0, 0, #{Com.contents}, "Y", #{Com.board}, #{Pri.id})
     </insert>
 
     <!-- 댓글 수정 -->

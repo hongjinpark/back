@@ -31,7 +31,7 @@ public class Comment extends BaseEntity {
     private String cmlayer; //0 : 댓글 1 : 대댓글(답글)
 
     @Column(nullable = false)
-    private String commentCroup; //댓글 그룹. 0 : 1번째 댓글 1 : 2번째 댓글
+    private String commentGroup; //댓글 그룹. 0 : 1번째 댓글 1 : 2번째 댓글
 
     @ManyToOne
     @JoinColumn(name = "board_id")

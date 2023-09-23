@@ -1,8 +1,10 @@
 package com.example.back.mapper;
 
+import com.example.back.config.auth.PrincipalDetail;
 import com.example.back.dto.BoardDto;
 import com.example.back.dto.CommentDto;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -11,9 +13,9 @@ import java.util.List;
 @Repository
 public interface CommentMapper {
 
-    List<CommentDto> selectComment(CommentDto commentDto); //댓글 조회
+    List<CommentDto> selectComment(Long id); //댓글 조회
 
-    void createComment(CommentDto commentDto); //댓글 추가
+    void createComment(@Param("Com")CommentDto commentDto, @Param("Pri")PrincipalDetail principalDetail); //댓글 추가
 
     void updateComment(CommentDto commentDto); //댓글 수정
 
