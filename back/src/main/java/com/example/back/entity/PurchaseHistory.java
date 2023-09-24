@@ -17,6 +17,7 @@ public class PurchaseHistory extends BaseEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "purchase_id")
     private long id;
+
     @Column(name = "status", nullable = false)
     private String status;
 
