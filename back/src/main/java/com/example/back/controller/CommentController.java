@@ -18,6 +18,7 @@ public class CommentController {
 
     private final CommentMapper commentMapper;
 
+    //댓글 조회
     @GetMapping("/list/{id}")
     public List<CommentDto> listNotice(@PathVariable Long id) {
         return commentMapper.selectComment(id);

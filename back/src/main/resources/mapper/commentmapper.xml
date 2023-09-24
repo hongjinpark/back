@@ -6,17 +6,24 @@
 
     <!-- 댓글 조회 -->
     <select id="selectComment" resultType="hashmap">
-        SELECT c.contents
+        SELECT c.contents, u.nickname, c.update_time
         FROM board b
-        INNER JOIN comment c
-        ON b.board_id = c.board_id
+        INNER JOIN comment c ON b.board_id = c.board_id
+        INNER JOIN user u ON u.user_id = c.user_id
         WHERE b.board_id = #{id};
     </select>
 
     <!-- 댓글 추가 -->
     <insert id="createComment">
-        INSERT INTO comment(reg_time, update_time, cmlayer, comment_group, contents, status, board_id, user_id)
-             VALUES (now(), now(), 0, 0, #{Com.contents}, "Y", #{Com.board}, #{Pri.id})
+        <choose>
+            <when test="Pri.id">
+
+            </when>
+            <otherwise>
+                INSERT INTO comment(reg_time, update_time, cmlayer, comment_group, contents, status, board_id, user_id)
+                VALUES (now(), now(), 0, 0, #{Com.contents}, "Y", #{Com.board}, #{Pri.id})
+            </otherwise>
+        </choose>
     </insert>
 
     <!-- 댓글 수정 -->

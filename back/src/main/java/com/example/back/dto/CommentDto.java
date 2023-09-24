@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class CommentDto {
 
-    private Long id;
+    private Long id; // comment_id
 
     private String status; //N : 댓글 없음 Y : 댓글 있음
 
