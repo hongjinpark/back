@@ -3,10 +3,7 @@ package com.example.back.dto;
 import com.example.back.entity.Product;
 import com.example.back.entity.Region;
 import com.example.back.entity.User;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.validation.constraints.NotEmpty;
 
@@ -14,6 +11,7 @@ import javax.validation.constraints.NotEmpty;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Setter
 public class ProductDto {
 
     @NotEmpty(message = "상품 제목은 필수 입력 값 입니다.")
