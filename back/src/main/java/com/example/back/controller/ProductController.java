@@ -47,9 +47,11 @@ public class ProductController {
 
 
     @PutMapping("/lists/{pdId}") //상품 수정
-    public ResponseEntity<Product> updateProduct(@PathVariable Long pdId, @RequestBody Product productDetails) {
+    public ResponseEntity<ProductListDto> updateProduct(@PathVariable Long pdId, @RequestBody Product productDetails) {
 
-        return productService.updateProduct(pdId, productDetails);
+        ProductListDto productListDto = productService.updateProduct(pdId, productDetails);
+
+        return ResponseEntity.ok(productListDto);
     }
 
     @DeleteMapping("/lists/{pdId}") //상품 삭제
@@ -60,6 +62,7 @@ public class ProductController {
         return ResponseEntity.ok().build();
     }
 
+
     @PostMapping("/testnew")
     public ResponseEntity<String> PostTest(@ModelAttribute("pdTitle") String pdTitle
             ,@ModelAttribute("pdContents") String pdContents
@@ -69,7 +72,7 @@ public class ProductController {
             ,@ModelAttribute("pdCategory") String pdCategory
             ,@ModelAttribute("pdHideStatus") String pdHideStatus
             ,@ModelAttribute("region") String region
-            ,@AuthenticationPrincipal PrincipalDetail principalDetail){
+            ,@AuthenticationPrincipal PrincipalDetail principalDetail) {
 
         RequestProduct requestProduct = RequestProduct.builder()
                 .pdTitle(pdTitle)
@@ -83,7 +86,7 @@ public class ProductController {
                 .price(price)
                 .build();
         try {
-            for(MultipartFile multipartFile: images){
+            for (MultipartFile multipartFile : images) {
                 // Get the file bytes
                 byte[] bytes = multipartFile.getBytes();
 
@@ -105,7 +108,15 @@ public class ProductController {
             e.printStackTrace();
             return ResponseEntity.status(500).body("Failed to upload the file: " + e.getMessage());
         }
-      productService.saveTestProduct(requestProduct);
+        productService.saveTestProduct(requestProduct);
         return ResponseEntity.ok("S");
+    }
+
+    @PutMapping("/lists/pdStatus") //Status만 수정 (N: 상품 없음 C: 거래 완료 R: 예약중 Y: 상품 있음)
+    public ResponseEntity<ProductListDto> updateStatus(@RequestBody Product productDetails) {
+        ProductListDto productListDto = productService.updateStatus(productDetails);
+
+        return ResponseEntity.ok(productListDto);
+
     }
 }

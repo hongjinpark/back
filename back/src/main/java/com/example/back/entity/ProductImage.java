@@ -13,8 +13,8 @@ public class ProductImage extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "pdimage_id")
-    private long id;
+    @Column(name = "product_image_id")
+    private Long id;
 
     private String imgUrl; // 상품 이미지 경로
 

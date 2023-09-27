@@ -14,7 +14,7 @@ public class SelectProduct extends BaseEntity{ // 상품 조회
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "select_product_id")
-    private long id;
+    private Long id;
 
     @Column(name = "status", nullable = false)
     private String status;

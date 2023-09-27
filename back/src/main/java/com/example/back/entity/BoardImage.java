@@ -12,8 +12,8 @@ import javax.persistence.*;
 public class BoardImage extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "bdimage_id")
-    private long id;
+    @Column(name = "board_image_id")
+    private Long id;
 
     private String bdImgUrl; // 게시판 이미지 경로
 

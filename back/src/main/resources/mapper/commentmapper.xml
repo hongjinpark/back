@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.back.mapper.CommentMapper">
+
+    <!-- 댓글 조회 -->
+    <select id="selectComment" resultType="hashmap">
+        SELECT c.contents, u.nickname, c.update_time
+        FROM board b
+        INNER JOIN comment c ON b.board_id = c.board_id
+        INNER JOIN user u ON u.user_id = c.user_id
+        WHERE b.board_id = #{id};
+    </select>
+
+    <!-- 댓글 추가 -->
+    <insert id="createComment">
+        <choose>
+            <when test="Pri.id">
+
+            </when>
+            <otherwise>
+                INSERT INTO comment(reg_time, update_time, cmlayer, comment_group, contents, status, board_id, user_id)
+                VALUES (now(), now(), 0, 0, #{Com.contents}, "Y", #{Com.board}, #{Pri.id})
+            </otherwise>
+        </choose>
+    </insert>
+
+    <!-- 댓글 수정 -->
+    <update id="updateComment">
+        UPDATE comment
+           SET contents = #{contents},
+               update_time = now()
+         WHERE comment_id = #{id}
+    </update>
+
+    <!-- 댓글 삭제 -->
+    <update id="deleteComment">
+        UPDATE comment
+           SET status = "N"
+         WHERE comment_id = #{id}
+    </update>
+
+</mapper>
