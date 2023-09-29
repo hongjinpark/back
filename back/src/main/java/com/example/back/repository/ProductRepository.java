@@ -13,4 +13,7 @@ import java.util.Optional;
 public interface ProductRepository extends JpaRepository<Product, Long> {
     Optional<Product> findByRegionAndUser(Region region, User user);
     Optional<List<Product>> findAllByUser(User user);
+    Optional<List<Product>> findAllByRegion_RegionNameLike(String regionName);
+
+    Optional<List<Product>> findByRegion_RegionNameContains(String regionName);
 }

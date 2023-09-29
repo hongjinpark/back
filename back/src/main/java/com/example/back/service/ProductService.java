@@ -1,10 +1,7 @@
 package com.example.back.service;
 
 import com.example.back.config.auth.PrincipalDetail;
-import com.example.back.dto.ProductDto;
-import com.example.back.dto.RequestProduct;
-import com.example.back.dto.RequestProductImg;
-import com.example.back.dto.ProductListDto;
+import com.example.back.dto.*;
 import com.example.back.entity.Product;
 import com.example.back.entity.ProductImage;
 import com.example.back.entity.Region;
@@ -129,5 +126,19 @@ public class ProductService {
         Product updateStatus = productRepository.save(product);
         return new ProductListDto(updateStatus, product.getUser());
 
+    }
+
+    @Transactional
+    public List<ResponseProduct> getProductListByRegionName(String regionName){
+        List<Product> productList = productRepository.findByRegion_RegionNameContains(regionName)
+                .orElse(Collections.emptyList());
+        List<ResponseProduct> responseProductList = new ArrayList<>();
+
+        for(Product product : productList) {
+            ResponseProduct responseProduct = new ResponseProduct(product);
+            responseProductList.add(responseProduct);
+        }
+
+        return responseProductList;
     }
 }

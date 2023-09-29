@@ -30,4 +30,11 @@ public class RegionDto {
         this.noticeStatus = region.getNoticeStatus();
         this.userId = user.getId();
     }
+
+    public RegionDto(Region region) {
+        this.status = region.getStatus();
+        this.regionName = region.getRegionName();
+        this.leadStatus = region.getLeadStatus();
+        this.noticeStatus = region.getNoticeStatus();
+    }
 }

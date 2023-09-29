@@ -1,7 +1,16 @@
 package com.example.back.dto;
 
-import javax.validation.constraints.NotEmpty;
+import com.example.back.entity.Product;
+import com.example.back.entity.ProductImage;
+import lombok.Data;
+import lombok.Getter;
 
+import javax.validation.constraints.NotEmpty;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Getter
 public class ResponseProduct {
 
     @NotEmpty(message = "상품 제목은 필수 입력 값 입니다.")
@@ -18,11 +27,24 @@ public class ResponseProduct {
 
     private String status;
 
-    private RequestProductImg[] images;
+    private List<ResponseProductImg> images;
     //기본값 : N
     private String hideStatus; //판매 완료된 상품 중 N: 숨기지 않음 Y: 숨김
 
-    private Long userId;
+    private UserDto user;
 
-    private Long regionId;
+    private RegionDto region;
+
+    public ResponseProduct(Product product){
+        this.pdTitle = product.getPdTitle();
+        this.pdContents = product.getPdContents();
+        this.pdCategory = product.getPdCategory();
+        this.price = product.getPrice();
+        this.status = product.getStatus();
+        this.images = product.getProductImages().stream()
+                .map(productImage -> new ResponseProductImg(productImage.getImgUrl())).collect(Collectors.toList());
+        this.hideStatus = product.getHideStatus();
+        this.user = new UserDto(product.getUser());
+        this.region = new RegionDto(product.getRegion());
+    }
 }

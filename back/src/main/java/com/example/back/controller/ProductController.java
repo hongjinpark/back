@@ -1,10 +1,7 @@
 package com.example.back.controller;
 
 import com.example.back.config.auth.PrincipalDetail;
-import com.example.back.dto.ProductDto;
-import com.example.back.dto.RequestProduct;
-import com.example.back.dto.RequestProductImg;
-import com.example.back.dto.ProductListDto;
+import com.example.back.dto.*;
 import com.example.back.entity.Product;
 import com.example.back.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -118,5 +115,12 @@ public class ProductController {
 
         return ResponseEntity.ok(productListDto);
 
+    }
+
+    @GetMapping("/lists/{regionName}")
+    public ResponseEntity<List<ResponseProduct>> getProductList(@PathVariable(value = "regionName") String regionName) {
+        List<ResponseProduct> responseProductList = productService.getProductListByRegionName(regionName);
+
+        return ResponseEntity.ok(responseProductList);
     }
 }
