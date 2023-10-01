@@ -121,6 +121,13 @@ public class ProductController {
     public ResponseEntity<List<ResponseProduct>> getProductList(@PathVariable(value = "regionName") String regionName) {
         List<ResponseProduct> responseProductList = productService.getProductListByRegionName(regionName);
 
+        // get project absolute path
+        String projectPath = System.getProperty("user.dir") + "\\";
+        for(ResponseProduct responseProduct: responseProductList) {
+            for(ResponseProductImg responseProductImg: responseProduct.getImages()) {
+                responseProductImg.setUrl(projectPath + responseProductImg.getUrl());
+            }
+        }
         return ResponseEntity.ok(responseProductList);
     }
 }
