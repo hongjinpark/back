@@ -6,6 +6,7 @@ import com.example.back.entity.Product;
 import com.example.back.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FileUtils;
+import org.springframework.data.domain.Slice;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -118,8 +119,8 @@ public class ProductController {
     }
 
     @GetMapping("/lists/{regionName}")
-    public ResponseEntity<List<ResponseProduct>> getProductList(@PathVariable(value = "regionName") String regionName) {
-        List<ResponseProduct> responseProductList = productService.getProductListByRegionName(regionName);
+    public ResponseEntity<Slice<ResponseProduct>> getProductList(@PathVariable(value = "regionName") String regionName) {
+        Slice<ResponseProduct> responseProductList = productService.getProductListByRegionName(regionName);
 
         // get project absolute path
         String projectPath = System.getProperty("user.dir") + "\\";

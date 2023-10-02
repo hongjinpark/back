@@ -11,6 +11,10 @@ import com.example.back.repository.ProductRepository;
 import com.example.back.repository.RegionRepository;
 import com.example.back.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.SliceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -129,16 +133,11 @@ public class ProductService {
     }
 
     @Transactional
-    public List<ResponseProduct> getProductListByRegionName(String regionName){
-        List<Product> productList = productRepository.findByRegion_RegionNameContains(regionName)
-                .orElse(Collections.emptyList());
-        List<ResponseProduct> responseProductList = new ArrayList<>();
+    public Slice<ResponseProduct> getProductListByRegionName(String regionName){
+        Pageable pageable = PageRequest.of(0, 1);
+        Slice<Product> productList = productRepository.findByRegion_RegionNameContainsOrderByRegTimeDesc(regionName, pageable);
 
-        for(Product product : productList) {
-            ResponseProduct responseProduct = new ResponseProduct(product);
-            responseProductList.add(responseProduct);
-        }
 
-        return responseProductList;
+        return productList.map(product -> new ResponseProduct(product));
     }
 }
