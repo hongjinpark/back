@@ -6,6 +6,8 @@ import com.example.back.entity.Product;
 import com.example.back.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FileUtils;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -119,8 +121,9 @@ public class ProductController {
     }
 
     @GetMapping("/lists/{regionName}")
-    public ResponseEntity<Slice<ResponseProduct>> getProductList(@PathVariable(value = "regionName") String regionName) {
-        Slice<ResponseProduct> responseProductList = productService.getProductListByRegionName(regionName);
+    public ResponseEntity<Slice<ResponseProduct>> getProductList(@PathVariable(value = "regionName") String regionName, @RequestParam(defaultValue = "0") int page){
+        Pageable pageable = PageRequest.of(page, 1);
+        Slice<ResponseProduct> responseProductList = productService.getProductListByRegionName(regionName, pageable);
 
         // get project absolute path
         String projectPath = System.getProperty("user.dir") + "\\";

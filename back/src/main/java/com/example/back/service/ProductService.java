@@ -133,8 +133,7 @@ public class ProductService {
     }
 
     @Transactional
-    public Slice<ResponseProduct> getProductListByRegionName(String regionName){
-        Pageable pageable = PageRequest.of(0, 1);
+    public Slice<ResponseProduct> getProductListByRegionName(String regionName, Pageable pageable){
         Slice<Product> productList = productRepository.findByRegion_RegionNameContainsOrderByRegTimeDesc(regionName, pageable);
 
 
