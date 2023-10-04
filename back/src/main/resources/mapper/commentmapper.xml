@@ -15,15 +15,23 @@
 
     <!-- 댓글 추가 -->
     <insert id="createComment">
-        <choose>
-            <when test="Pri.id">
-
-            </when>
-            <otherwise>
-                INSERT INTO comment(reg_time, update_time, cmlayer, comment_group, contents, status, board_id, user_id)
-                VALUES (now(), now(), 0, 0, #{Com.contents}, "Y", #{Com.board}, #{Pri.id})
-            </otherwise>
-        </choose>
+        INSERT INTO comment ( reg_time
+        , update_time
+        , cmlayer
+        , comment_group
+        , contents
+        , status
+        , board_id
+        , user_id
+        )
+        VALUES ( now()
+        , now()
+        , 0
+        , COALESCE((SELECT MAX(a.comment_group) FROM comment a WHERE board_id = #{Com.board}), -1) + 1, #{Com.contents}
+        , 'Y'
+        , #{Com.board}
+        , #{Pri.id}
+        )
     </insert>
 
     <!-- 댓글 수정 -->
