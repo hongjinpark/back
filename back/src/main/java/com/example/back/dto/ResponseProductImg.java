@@ -11,4 +11,9 @@ import lombok.Setter;
 @AllArgsConstructor
 public class ResponseProductImg {
     private String url;
+    private byte[] data;
+
+    public ResponseProductImg(String url) {
+        this.url = url;
+    }
 }

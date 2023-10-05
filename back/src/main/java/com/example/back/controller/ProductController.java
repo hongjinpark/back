@@ -6,6 +6,8 @@ import com.example.back.entity.Product;
 import com.example.back.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FileUtils;
+import org.eclipse.jdt.internal.compiler.batch.ClasspathDirectory;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -87,14 +89,13 @@ public class ProductController {
                 .build();
         try {
             for (MultipartFile multipartFile : images) {
-                // Get the file bytes
                 byte[] bytes = multipartFile.getBytes();
+                // src/main/resources/images classpath
 
-                // Set the file path
-                String staticPath = Paths.get("src/main/resources").toString();
-                String filePath = staticPath + File.separator + "images" + File.separator + multipartFile.getOriginalFilename();
-                System.out.println(filePath);
-                // Ensure the directory structure exists
+
+                ClassPathResource classPathResource = new ClassPathResource("back\\src\\main\\resources\\images");
+                String filePath =  classPathResource.getPath() + File.separator + multipartFile.getOriginalFilename();
+
                 Path path = Paths.get(filePath);
                 Files.createDirectories(path.getParent());
 
@@ -121,15 +122,18 @@ public class ProductController {
     }
 
     @GetMapping("/lists/{regionName}")
-    public ResponseEntity<Slice<ResponseProduct>> getProductList(@PathVariable(value = "regionName") String regionName, @RequestParam(defaultValue = "0") int page){
+    public ResponseEntity<Slice<ResponseProduct>> getProductList(@PathVariable(value = "regionName") String regionName, @RequestParam(defaultValue = "0") int page) throws IOException {
         Pageable pageable = PageRequest.of(page, 1);
         Slice<ResponseProduct> responseProductList = productService.getProductListByRegionName(regionName, pageable);
-
         // get project absolute path
         String projectPath = System.getProperty("user.dir") + "\\";
         for(ResponseProduct responseProduct: responseProductList) {
             for(ResponseProductImg responseProductImg: responseProduct.getImages()) {
+                ClassPathResource imageFile = new ClassPathResource(responseProductImg.getUrl());
+                byte[] imageBytes = Files.readAllBytes(imageFile.getFile().toPath());
+
                 responseProductImg.setUrl(projectPath + responseProductImg.getUrl());
+                responseProductImg.setData(imageBytes);
             }
         }
         return ResponseEntity.ok(responseProductList);
