@@ -129,8 +129,9 @@ public class ProductController {
         String projectPath = System.getProperty("user.dir") + "\\";
         for(ResponseProduct responseProduct: responseProductList) {
             for(ResponseProductImg responseProductImg: responseProduct.getImages()) {
-                ClassPathResource imageFile = new ClassPathResource(responseProductImg.getUrl());
-                byte[] imageBytes = Files.readAllBytes(imageFile.getFile().toPath());
+                ClassPathResource classPathResource = new ClassPathResource(responseProductImg.getUrl()
+                        .replace("back/src/main/resources/", ""));
+                byte[] imageBytes = classPathResource.getInputStream().readAllBytes();
 
                 responseProductImg.setUrl(projectPath + responseProductImg.getUrl());
                 responseProductImg.setData(imageBytes);
