@@ -40,9 +40,9 @@ public class ProductController {
     }
 
     @GetMapping("/lists") //user에 따른 상품 조회
-    public ResponseEntity<List<ProductListDto>> getProductById(@AuthenticationPrincipal PrincipalDetail principalDetail) {
+    public ResponseEntity<List<ProductListDto>> getProductListById(@AuthenticationPrincipal PrincipalDetail principalDetail) {
 
-        List<ProductListDto> pdDtoList = productService.getProductById(principalDetail.getId());
+        List<ProductListDto> pdDtoList = productService.getProductListById(principalDetail.getId());
 
         return ResponseEntity.ok(pdDtoList);
     }
@@ -138,5 +138,21 @@ public class ProductController {
             }
         }
         return ResponseEntity.ok(responseProductList);
+    }
+
+    @GetMapping("/{pdId}")
+    public ResponseEntity<ResponseProduct> getProduct(@PathVariable Long pdId) throws IOException {
+        ResponseProduct responseProduct = productService.getProductById(pdId);
+        // get project absolute path
+        String projectPath = System.getProperty("user.dir") + "\\";
+        for(ResponseProductImg responseProductImg: responseProduct.getImages()) {
+            ClassPathResource classPathResource = new ClassPathResource(responseProductImg.getUrl()
+                    .replace("back/src/main/resources/", ""));
+            byte[] imageBytes = classPathResource.getInputStream().readAllBytes();
+
+            responseProductImg.setUrl(projectPath + responseProductImg.getUrl());
+            responseProductImg.setData(imageBytes);
+        }
+        return ResponseEntity.ok(responseProduct);
     }
 }

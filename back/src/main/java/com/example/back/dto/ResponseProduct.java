@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 @Getter
 public class ResponseProduct {
 
+    private Long id;
     @NotEmpty(message = "상품 제목은 필수 입력 값 입니다.")
     private String pdTitle; //상품 제목
 
@@ -36,6 +37,7 @@ public class ResponseProduct {
     private RegionDto region;
 
     public ResponseProduct(Product product){
+        this.id = product.getId();
         this.pdTitle = product.getPdTitle();
         this.pdContents = product.getPdContents();
         this.pdCategory = product.getPdCategory();

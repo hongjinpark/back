@@ -59,7 +59,7 @@ public class ProductService {
     }
 
     @Transactional
-    public List<ProductListDto> getProductById(Long id) {
+    public List<ProductListDto> getProductListById(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("User not exist with ID : " + id));
 
@@ -138,5 +138,13 @@ public class ProductService {
 
 
         return productList.map(product -> new ResponseProduct(product));
+    }
+
+    @Transactional
+    public ResponseProduct  getProductById(Long id) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Product not exist with id :" + id));
+
+        return new ResponseProduct(product);
     }
 }
