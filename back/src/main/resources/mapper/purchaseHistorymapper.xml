@@ -4,39 +4,29 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.back.mapper.PurchaseHistoryMapper">
 
-<!--    &lt;!&ndash; 미완성 구매 이력 추가 where = user.id = #{principal.id}~~이런식으로 &ndash;&gt;-->
-<!--    <insert id="createPurchaseHistory" parameterType="PurchaseHistoryDto">-->
-<!--        INSERT INTO purchase_history (reg_time, update_time, status, product_id, user_id)-->
-<!--        SELECT NOW(), NOW(), 'Y', p.product_id, u.user_id-->
-<!--        FROM product p-->
-<!--        JOIN user u ON p.user_info_id = u.user_id-->
-<!--    </insert>-->
-
+    <!-- 구매 이력 추가 -->
     <insert id="createPurchaseHistory" parameterType="PurchaseHistoryDto" >
         INSERT INTO purchase_history (reg_time, update_time, status, product_id, user_id)
---         SELECT  NOW(), NOW(), p.status, #{Pur.productId}, #{Pri.id} #{userId} 재우
-        SELECT  NOW(), NOW(), p.status, #{Pur.productId}, #{userId} -- 홍진
+        SELECT  NOW(), NOW(), p.status, #{purchaseHistoryDto.productId}, #{userId}
         FROM product p
-        JOIN user u ON p.user_id = u.user_id
-        WHERE p.product_id = #{Pur.productId}
+        WHERE p.product_id = #{purchaseHistoryDto.productId}
     </insert>
 
-
-    <!-- 구매 이력 목록 조회 끝 -->
+    <!-- 구매 이력 목록 조회 -->
     <select id="purchaseHistories" resultType="HashMap">
-        SELECT ph.purchase_id, p.pd_title, p.pd_contents, p.price
+        SELECT ph.purchase_history_id, p.pd_title, p.pd_contents, p.price
         FROM purchase_history ph
         INNER JOIN product p ON ph.product_id = p.product_id
-        ORDER BY ph.purchase_id;
+        ORDER BY ph.purchase_history_id;
     </select>
 
-    <!-- 구매 이력 상세 조회 끝 -->
+    <!-- 구매 이력 상세 조회 -->
     <select id="selectPurchaseHistoryDetail" resultType="HashMap" parameterType="Long">
-        SELECT ph.purchase_id, p.pd_category, p.pd_title, p.pd_contents, p.price, u.nickname
+        SELECT ph.purchase_history_id, p.pd_category, p.pd_title, p.pd_contents, p.price, u.nickname
         FROM purchase_history ph
         INNER JOIN product p ON ph.product_id = p.product_id
         INNER JOIN user u ON ph.user_id = u.user_id
-        WHERE ph.purchase_id = #{purchaseId};
+        WHERE ph.purchase_history_id = #{purchaseId};
     </select>
 
     <!-- 미완성 구매 이력 수정 -->
@@ -47,10 +37,10 @@
         WHERE select_product_id = #{id}
     </update>
 
-    <!-- 구매 이력 삭제 끝-->
+    <!-- 구매 이력 삭제 -->
     <delete id="deletePurchaseHistory" parameterType="Long">
         DELETE FROM purchase_history
-        WHERE purchase_id = #{purchaseId}
+        WHERE purchase_history_id = #{purchaseId}
     </delete>
 
 
