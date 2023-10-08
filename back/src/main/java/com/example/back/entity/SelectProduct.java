@@ -27,4 +27,9 @@ public class SelectProduct extends BaseEntity{ // 상품 조회
     @JoinColumn(name = "product_id")
     private Product product; // 조회한 상품
 
+    public SelectProduct(String status, User user, Product product) {
+        this.status = status;
+        this.user = user;
+        this.product = product;
+    }
 }

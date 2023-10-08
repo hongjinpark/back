@@ -9,6 +9,7 @@ import com.example.back.entity.User;
 import com.example.back.entity.*;
 import com.example.back.repository.ProductRepository;
 import com.example.back.repository.RegionRepository;
+import com.example.back.repository.SelectProductRepository;
 import com.example.back.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -32,6 +33,7 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final RegionRepository regionRepository;
     private final UserRepository userRepository;
+    private final SelectProductRepository selectProductRepository;
 //    private final PurchaseHistory purchaseHistory;
 
     @Transactional
@@ -141,9 +143,19 @@ public class ProductService {
     }
 
     @Transactional
-    public ResponseProduct  getProductById(Long id) {
+    public ResponseProduct  getProductById(Long id, PrincipalDetail principalDetail) {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Product not exist with id :" + id));
+
+        if(principalDetail != null){
+            User user = userRepository.findById(principalDetail.getId())
+                    .orElseThrow(() -> new IllegalArgumentException("User not found with ID : " + principalDetail.getId()));
+
+            SelectProduct selectProduct = selectProductRepository
+                    .findByUser_IdAndProduct_Id(principalDetail.getId(), product.getId())
+                    .orElse(new SelectProduct("Y",  user, product));
+            selectProductRepository.save(selectProduct);
+        }
 
         return new ResponseProduct(product);
     }

@@ -125,15 +125,13 @@ public class ProductController {
     public ResponseEntity<Slice<ResponseProduct>> getProductList(@PathVariable(value = "regionName") String regionName, @RequestParam(defaultValue = "0") int page) throws IOException {
         Pageable pageable = PageRequest.of(page, 1);
         Slice<ResponseProduct> responseProductList = productService.getProductListByRegionName(regionName, pageable);
-        // get project absolute path
-        String projectPath = System.getProperty("user.dir") + "\\";
+
         for(ResponseProduct responseProduct: responseProductList) {
             for(ResponseProductImg responseProductImg: responseProduct.getImages()) {
                 ClassPathResource classPathResource = new ClassPathResource(responseProductImg.getUrl()
                         .replace("back/src/main/resources/", ""));
                 byte[] imageBytes = classPathResource.getInputStream().readAllBytes();
 
-                responseProductImg.setUrl(projectPath + responseProductImg.getUrl());
                 responseProductImg.setData(imageBytes);
             }
         }
@@ -141,16 +139,14 @@ public class ProductController {
     }
 
     @GetMapping("/{pdId}")
-    public ResponseEntity<ResponseProduct> getProduct(@PathVariable Long pdId) throws IOException {
-        ResponseProduct responseProduct = productService.getProductById(pdId);
-        // get project absolute path
-        String projectPath = System.getProperty("user.dir") + "\\";
+    public ResponseEntity<ResponseProduct> getProduct(@PathVariable Long pdId
+            ,@AuthenticationPrincipal PrincipalDetail principalDetail) throws IOException {
+        ResponseProduct responseProduct = productService.getProductById(pdId, principalDetail);
+
         for(ResponseProductImg responseProductImg: responseProduct.getImages()) {
             ClassPathResource classPathResource = new ClassPathResource(responseProductImg.getUrl()
                     .replace("back/src/main/resources/", ""));
             byte[] imageBytes = classPathResource.getInputStream().readAllBytes();
-
-            responseProductImg.setUrl(projectPath + responseProductImg.getUrl());
             responseProductImg.setData(imageBytes);
         }
         return ResponseEntity.ok(responseProduct);
