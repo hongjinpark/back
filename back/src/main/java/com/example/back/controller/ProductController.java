@@ -66,7 +66,7 @@ public class ProductController {
     }
 
 
-    @PostMapping("/testnew")
+    @PostMapping("/testnew") // Product 저장
     public ResponseEntity<String> PostTest(@ModelAttribute("pdTitle") String pdTitle
             ,@ModelAttribute("pdContents") String pdContents
             ,@ModelAttribute("price") String price
@@ -90,20 +90,21 @@ public class ProductController {
                 .build();
         try {
             for (MultipartFile multipartFile : images) {
+                // multipartFile: 이미지, byte[]로 저장
                 byte[] bytes = multipartFile.getBytes();
-                // src/main/resources/images classpath
-
-
+                // 이미지 저장 주소
                 ClassPathResource classPathResource = new ClassPathResource("back\\src\\main\\resources\\images");
+                // 이미지 저장 주소 + 파일 이름
                 String filePath =  classPathResource.getPath() + File.separator + multipartFile.getOriginalFilename();
-
+                // 최종 주소
                 Path path = Paths.get(filePath);
                 Files.createDirectories(path.getParent());
 
-                // Save the file
+                // 파일 저장
                 File newFile = new File(filePath);
                 newFile.createNewFile();
                 FileUtils.writeByteArrayToFile(newFile, bytes);
+                // requestProduct에 ProductImg 주소만 저장
                 requestProduct.getImages().add(new RequestProductImg(filePath));
             }
         } catch (IOException e) {
@@ -122,32 +123,36 @@ public class ProductController {
 
     }
 
-    @GetMapping("/lists/{regionName}")
+    @GetMapping("/lists/{regionName}") //regionNamge을 포함하는 ProductList 조회
     public ResponseEntity<Slice<ResponseProduct>> getProductList(@PathVariable(value = "regionName") String regionName, @RequestParam(defaultValue = "0") int page) throws IOException {
+        //Sort 정의 regTime, desc
         Sort sort = Sort.by(Sort.Direction.DESC, "regTime");
+        // Pageable 정의 PageRequest.of(index, size, sort)
         Pageable pageable = PageRequest.of(page, 2, sort);
         Slice<ResponseProduct> responseProductList = productService.getProductListByRegionName(regionName, pageable);
 
+        // ResponseProductList의 Image를 byte[]로 추가
         for(ResponseProduct responseProduct: responseProductList) {
             for(ResponseProductImg responseProductImg: responseProduct.getImages()) {
                 ClassPathResource classPathResource = new ClassPathResource(responseProductImg.getUrl()
                         .replace("back/src/main/resources/", ""));
+                // url을 통해 image파일 byte[]로 저장
                 byte[] imageBytes = classPathResource.getInputStream().readAllBytes();
-
                 responseProductImg.setData(imageBytes);
             }
         }
         return ResponseEntity.ok(responseProductList);
     }
 
-    @GetMapping("/{pdId}")
+    @GetMapping("/{pdId}") // pdId통해 Product 조회
     public ResponseEntity<ResponseProduct> getProduct(@PathVariable Long pdId
             ,@AuthenticationPrincipal PrincipalDetail principalDetail) throws IOException {
         ResponseProduct responseProduct = productService.getProductById(pdId, principalDetail);
-
+        // ResponseProduct의 Image를 byte[]로 추가
         for(ResponseProductImg responseProductImg: responseProduct.getImages()) {
             ClassPathResource classPathResource = new ClassPathResource(responseProductImg.getUrl()
                     .replace("back/src/main/resources/", ""));
+            // url을 통해 image파일 byte[]로 저장
             byte[] imageBytes = classPathResource.getInputStream().readAllBytes();
             responseProductImg.setData(imageBytes);
         }

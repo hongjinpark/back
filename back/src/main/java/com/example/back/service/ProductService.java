@@ -136,9 +136,11 @@ public class ProductService {
 
     @Transactional
     public Slice<ResponseProduct> getProductListByRegionName(String regionName, Pageable pageable){
+        // ProductSlice 조회
         Slice<Product> productList = productRepository.findByRegion_RegionNameContainsOrderByRegTimeDesc(regionName, pageable);
+        // ResponeProduct로 변환
         Slice<ResponseProduct> responseProductSlice = productList.map(ResponseProduct::new);
-
+        // ProductList 별 조회수 조회
         List<Object[]> objects = productRepository.findProductsAndCount(productList.toList());
         for(int i=0; i<objects.size(); i++){
             ResponseProduct responseProduct = responseProductSlice.toList().get(i);
@@ -151,7 +153,7 @@ public class ProductService {
     public ResponseProduct  getProductById(Long id, PrincipalDetail principalDetail) {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Product not exist with id :" + id));
-
+        // 로그인 되어 있을 때 SelectProduct 추가
         if(principalDetail != null){
             User user = userRepository.findById(principalDetail.getId())
                     .orElseThrow(() -> new IllegalArgumentException("User not found with ID : " + principalDetail.getId()));
