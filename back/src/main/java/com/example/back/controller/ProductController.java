@@ -11,6 +11,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -123,7 +124,8 @@ public class ProductController {
 
     @GetMapping("/lists/{regionName}")
     public ResponseEntity<Slice<ResponseProduct>> getProductList(@PathVariable(value = "regionName") String regionName, @RequestParam(defaultValue = "0") int page) throws IOException {
-        Pageable pageable = PageRequest.of(page, 2);
+        Sort sort = Sort.by(Sort.Direction.DESC, "regTime");
+        Pageable pageable = PageRequest.of(page, 2, sort);
         Slice<ResponseProduct> responseProductList = productService.getProductListByRegionName(regionName, pageable);
 
         for(ResponseProduct responseProduct: responseProductList) {

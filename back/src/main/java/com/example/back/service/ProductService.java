@@ -137,9 +137,14 @@ public class ProductService {
     @Transactional
     public Slice<ResponseProduct> getProductListByRegionName(String regionName, Pageable pageable){
         Slice<Product> productList = productRepository.findByRegion_RegionNameContainsOrderByRegTimeDesc(regionName, pageable);
+        Slice<ResponseProduct> responseProductSlice = productList.map(ResponseProduct::new);
 
-
-        return productList.map(product -> new ResponseProduct(product));
+        List<Object[]> objects = productRepository.findProductsAndCount(productList.toList());
+        for(int i=0; i<objects.size(); i++){
+            ResponseProduct responseProduct = responseProductSlice.toList().get(i);
+            responseProduct.setSelectedCount((Long) objects.get(i)[1]);
+        }
+        return responseProductSlice;
     }
 
     @Transactional

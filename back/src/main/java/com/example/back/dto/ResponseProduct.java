@@ -4,6 +4,7 @@ import com.example.back.entity.Product;
 import com.example.back.entity.ProductImage;
 import lombok.Data;
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
+@Setter
 public class ResponseProduct {
 
     private Long id;
@@ -31,6 +33,8 @@ public class ResponseProduct {
     private List<ResponseProductImg> images;
     //기본값 : N
     private String hideStatus; //판매 완료된 상품 중 N: 숨기지 않음 Y: 숨김
+
+    private Long selectedCount;
 
     private UserDto user;
 
