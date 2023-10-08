@@ -123,7 +123,7 @@ public class ProductController {
 
     @GetMapping("/lists/{regionName}")
     public ResponseEntity<Slice<ResponseProduct>> getProductList(@PathVariable(value = "regionName") String regionName, @RequestParam(defaultValue = "0") int page) throws IOException {
-        Pageable pageable = PageRequest.of(page, 1);
+        Pageable pageable = PageRequest.of(page, 2);
         Slice<ResponseProduct> responseProductList = productService.getProductListByRegionName(regionName, pageable);
 
         for(ResponseProduct responseProduct: responseProductList) {
