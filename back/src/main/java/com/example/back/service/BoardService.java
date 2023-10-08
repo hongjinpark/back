@@ -1,11 +1,8 @@
 package com.example.back.service;
 
 import com.example.back.config.auth.PrincipalDetail;
-import com.example.back.dto.BoardDto;
-import com.example.back.dto.BoardListDto;
-import com.example.back.entity.Board;
-import com.example.back.entity.Region;
-import com.example.back.entity.User;
+import com.example.back.dto.*;
+import com.example.back.entity.*;
 import com.example.back.repository.BoardRepository;
 import com.example.back.repository.RegionRepository;
 import com.example.back.repository.UserRepository;
@@ -34,14 +31,13 @@ public class BoardService {
         Region region = regionRepository.findById(principalDetail.getId())
                 .orElseThrow(() -> new IllegalArgumentException("Region not found with ID: " + boardDto.getRegionId()));
 
-        Board board= boardRepository.findByUserAndRegion(user, region)
-                .orElse(Board.builder()
-                        .bdSubject(boardDto.getBdSubject())
-                        .bdContents(boardDto.getBdContents())
-                        .status(boardDto.getStatus())
-                        .user(user)
-                        .region(region)
-                        .build());
+        Board board= Board.builder()
+                .bdSubject(boardDto.getBdSubject())
+                .bdContents(boardDto.getBdContents())
+                .status(boardDto.getStatus())
+                .user(user)
+                .region(region)
+                .build();
 
         boardRepository.save(board);
 
@@ -81,6 +77,35 @@ public class BoardService {
     @Transactional
     public void deleteBoard(Long boardId) {
 
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(() -> new IllegalArgumentException("Board not exist with ID :" + boardId));
+
+//        board.getCommentList().remove(0);
+
         boardRepository.deleteById(boardId);
+    }
+
+    @Transactional
+    public void boardImg_upload(RequestBoard requestBoard) {
+        User user = userRepository.findById(requestBoard.getUserId())
+                .orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + requestBoard.getUserId()));
+
+        Region region = regionRepository.findById(requestBoard.getUserId())
+                .orElseThrow(() -> new IllegalArgumentException("Region not found with ID: " + requestBoard.getRegion()));
+
+        Board board = Board.builder()
+                .bdSubject(requestBoard.getBdSubject())
+                .bdContents(requestBoard.getBdContents())
+                .status(requestBoard.getStatus())
+                .user(user)
+                .region(region)
+                .build();
+
+        for (RequestBoardImg boardImg : requestBoard.getImages()) {
+            BoardImage boardImage = new BoardImage(boardImg.getBdImgUrl(), board);
+            board.getBoardImages().add(boardImage);
+        }
+
+        boardRepository.save(board);
     }
 }

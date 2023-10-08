@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 게시판 테이블
@@ -42,6 +44,12 @@ public class Board extends BaseEntity {
     @JoinColumn(name = "region_id")
     @JsonIgnore
     private Region region; //게시판 등록 지역
+
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
+    private List<BoardImage> boardImages = new ArrayList<>();
+
+    @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<Comment> commentList = new ArrayList<>();
 
     @Builder
     public Board(String status, String bdSubject, String bdContents, User user, Region region) {
