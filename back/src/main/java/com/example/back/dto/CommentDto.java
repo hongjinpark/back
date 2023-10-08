@@ -18,7 +18,7 @@ public class CommentDto {
 
     private String contents; // 댓글 내용
 
-    private String cmlayer; //0 : 댓글 1 : 대댓글(답글)
+    private String cmlayer; //0 : 댓글 1 : 1번째 대댓글(답글) 2 : 2번째 대댓글(답글)
 
     private String commentGroup; //댓글 그룹. 0 : 1번째 댓글 1 : 2번째 댓글
 

@@ -1,14 +1,16 @@
 package com.example.back.controller;
 
+import com.example.back.config.auth.PrincipalDetail;
 import com.example.back.dto.PurchaseHistoryDto;
-
 import com.example.back.entity.PurchaseHistory;
 import com.example.back.entity.User;
-
+import com.example.back.entity.PurchaseHistory;
+import com.example.back.entity.User;
 import com.example.back.mapper.PurchaseHistoryMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,13 +23,21 @@ public class PurchaseHistoryController {
 
     private final PurchaseHistoryMapper purchaseHistoryMapper;
 
-    // 미완성 구매 이력 추가
     @PostMapping("/add")
-    public ResponseEntity<Long> addPurchaseHistory() {
-        PurchaseHistoryDto purchaseHistoryDto = new PurchaseHistoryDto();
-//        purchaseHistoryDto.setUser(new User(1));
-        return ResponseEntity.ok().body(1L);
+    public ResponseEntity<String> addPurchaseHistory(@RequestBody PurchaseHistoryDto purchaseHistoryDto, @AuthenticationPrincipal PrincipalDetail principalDetail){
+        Long userId = purchaseHistoryDto.getUserId(principalDetail);
+//        purchaseHistoryMapper.createPurchaseHistory(purchaseHistoryDto, principalDetail); 재우
+        purchaseHistoryMapper.createPurchaseHistory(purchaseHistoryDto, userId); // 홍진
+        return new ResponseEntity<>("ok",HttpStatus.OK);
     }
+
+//    // 미완성 구매 이력 추가
+//    @PostMapping("/add")
+//    public ResponseEntity<Long> addPurchaseHistory() {
+//        PurchaseHistoryDto purchaseHistoryDto = new PurchaseHistoryDto();
+//        //purchaseHistoryDto.setUser(new User(1));
+//        return ResponseEntity.ok().body(1L);
+//    }
 
     // 구매 이력 목록 조회
     @GetMapping

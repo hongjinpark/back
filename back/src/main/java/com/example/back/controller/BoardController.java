@@ -1,11 +1,11 @@
 package com.example.back.controller;
 
 import com.example.back.config.auth.PrincipalDetail;
-import com.example.back.dto.BoardDto;
-import com.example.back.dto.BoardListDto;
+import com.example.back.dto.*;
 import com.example.back.entity.Board;
 import com.example.back.service.BoardService;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.io.FileUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -14,6 +14,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -45,23 +49,54 @@ public class BoardController {
     }
 
     @DeleteMapping("/lists/{boardId}") //board 삭제
-    public ResponseEntity<Object> deleteBoard(@PathVariable Long boardId) {
+    public ResponseEntity<?> deleteBoard(@PathVariable Long boardId) {
 
         boardService.deleteBoard(boardId);
 
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/upload")
-    public ResponseEntity upload(@RequestPart(value="file",required = false) MultipartFile file) {
-        String originalFileName = file.getOriginalFilename();
-        File destination = new File("upload/dir" + originalFileName);
+    @PostMapping("/boardImg")
+    public ResponseEntity<String> boardImg_upload(@ModelAttribute("status") String status,
+                                                  @ModelAttribute("bdSubject") String bdSubject,
+                                                  @ModelAttribute("bdContents") String bdContents,
+                                                  @ModelAttribute("image") List<MultipartFile> images,
+                                                  @ModelAttribute("region") String region,
+                                                  @AuthenticationPrincipal PrincipalDetail principalDetail) {
+
+        RequestBoard requestBoard = RequestBoard.builder()
+                .bdSubject(bdSubject)
+                .bdContents(bdContents)
+                .status(status)
+                .userId(principalDetail.getId())
+                .region(region)
+                .images(new ArrayList<>())
+                .build();
+
         try {
-            file.transferTo(destination);
+            for(MultipartFile multipartFile : images) {
+                byte[] bytes = multipartFile.getBytes();
+
+                String staticPath = Paths.get("src/main/resources").toString();
+                String filePath = staticPath + File.separator + "images" + File.separator + multipartFile.getOriginalFilename();
+                System.out.println(filePath);
+
+                Path path = Paths.get(filePath);
+                Files.createDirectories(path.getParent());
+
+                File newFile = new File(filePath);
+                newFile.createNewFile();
+                FileUtils.writeByteArrayToFile(newFile, bytes);
+                requestBoard.getImages().add(new RequestBoardImg(filePath));
+
+            }
         } catch (IOException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(originalFileName);
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("Failed to upload the file: " + e.getMessage());
         }
-        return ResponseEntity.status(HttpStatus.CREATED).body(originalFileName);
+
+        boardService.boardImg_upload(requestBoard);
+        return ResponseEntity.ok("S");
     }
 
 }

@@ -12,12 +12,17 @@ import javax.persistence.*;
 public class BoardImage extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "board_image_id")
-    private Long id;
+    @Column(name = "bdimage_id")
+    private long id;
 
     private String bdImgUrl; // 게시판 이미지 경로
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "board_id")
     private Board board;
+
+    public BoardImage(String bdImgUrl, Board board){
+        this.bdImgUrl = bdImgUrl;
+        this.board = board;
+    }
 }
