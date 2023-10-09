@@ -7,6 +7,7 @@ import com.example.back.entity.ProductImage;
 import com.example.back.entity.Region;
 import com.example.back.entity.User;
 import com.example.back.entity.*;
+import com.example.back.mapper.PurchaseHistoryMapper;
 import com.example.back.repository.ProductRepository;
 import com.example.back.repository.RegionRepository;
 import com.example.back.repository.SelectProductRepository;
@@ -34,7 +35,7 @@ public class ProductService {
     private final RegionRepository regionRepository;
     private final UserRepository userRepository;
     private final SelectProductRepository selectProductRepository;
-//    private final PurchaseHistory purchaseHistory;
+    private final PurchaseHistoryMapper purchaseHistoryMapper;
 
     @Transactional
     public ProductDto createProduct(ProductDto productDto, PrincipalDetail principalDetail) {
@@ -121,13 +122,26 @@ public class ProductService {
     }
 
     @Transactional
-    public ProductListDto updateStatus(Product productDetails) {
+    public ProductListDto updateStatus(Product productDetails, PrincipalDetail principalDetail) {
         Product product = productRepository.findById(productDetails.getId())
                 .orElseThrow(() -> new IllegalArgumentException("Product not exist with id :" + productDetails.getId()));
+
+        User user = userRepository.findById(principalDetail.getId())
+                .orElseThrow(() -> new IllegalArgumentException("UserInfo not found with ID : " + principalDetail.getId()));
 
         product.setStatus(productDetails.getStatus());
 
         //createPurchaseHistory 이거 불러오기 추가(status : C일 떄 생성하는 쿼리)
+
+        PurchaseHistoryDto purchaseHistoryDto = PurchaseHistoryDto.builder()
+                .productId(product.getId())
+                .userId(user.getId())
+                .build();
+
+        if(productDetails.getStatus().equals("C")) {
+            purchaseHistoryMapper.createPurchaseHistory(purchaseHistoryDto, user.getId());
+        }
+
 
         Product updateStatus = productRepository.save(product);
         return new ProductListDto(updateStatus, product.getUser());
