@@ -66,28 +66,13 @@ public class ProductController {
     }
 
 
-    @PostMapping("/testnew") // Product 저장
-    public ResponseEntity<String> PostTest(@ModelAttribute("pdTitle") String pdTitle
-            ,@ModelAttribute("pdContents") String pdContents
-            ,@ModelAttribute("price") String price
-            ,@ModelAttribute("images") List<MultipartFile> images
-            ,@ModelAttribute("status") String status
-            ,@ModelAttribute("pdCategory") String pdCategory
-            ,@ModelAttribute("pdHideStatus") String pdHideStatus
-            ,@ModelAttribute("region") String region
+    @PostMapping(value = "/testnew") // Product 저장
+    public ResponseEntity<String> PostTest(@RequestPart List<MultipartFile> images
+            ,@RequestPart(name = "product") RequestProduct product
             ,@AuthenticationPrincipal PrincipalDetail principalDetail) {
-
-        RequestProduct requestProduct = RequestProduct.builder()
-                .pdTitle(pdTitle)
-                .pdContents(pdContents)
-                .status(status)
-                .hideStatus(pdHideStatus)
-                .pdCategory(pdCategory)
-                .userId(principalDetail.getId())
-                .region(region)
-                .images(new ArrayList<>())
-                .price(price)
-                .build();
+        product.setUserId(principalDetail.getId());
+        product.setHideStatus("N");
+        product.setPdCategory("test");
         try {
             for (MultipartFile multipartFile : images) {
                 // multipartFile: 이미지, byte[]로 저장
@@ -105,13 +90,13 @@ public class ProductController {
                 newFile.createNewFile();
                 FileUtils.writeByteArrayToFile(newFile, bytes);
                 // requestProduct에 ProductImg 주소만 저장
-                requestProduct.getImages().add(new RequestProductImg(filePath));
+                product.getImages().add(new RequestProductImg(filePath));
             }
         } catch (IOException e) {
             e.printStackTrace();
             return ResponseEntity.status(500).body("Failed to upload the file: " + e.getMessage());
         }
-        productService.saveTestProduct(requestProduct);
+        productService.saveTestProduct(product);
         return ResponseEntity.ok("S");
     }
 

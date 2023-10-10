@@ -4,6 +4,7 @@ package com.example.back.config;
 import com.example.back.config.auth.OAuth2SuccessHandler;
 import com.example.back.config.auth.PrincipalDetailService;
 import com.example.back.config.auth.PrincipalOauth2UserService;
+import com.example.back.constant.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -98,7 +99,7 @@ public class SecurityConfig {
 
 //                .authorizeRequests().antMatchers("/region/*").hasRole("USER")
 //                .and()
-                .authorizeRequests().antMatchers("/region/*").hasRole("USER").and()
+ //               .authorizeRequests().antMatchers("/region/*").hasRole("USER").and()
                 .logout().logoutSuccessUrl("/") //logout 요청시 홈으로 이동 - 기본 logout url = "/logout"
                 .and()
                 .oauth2Login()
