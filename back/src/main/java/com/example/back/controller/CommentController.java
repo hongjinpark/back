@@ -30,6 +30,12 @@ public class CommentController {
         commentMapper.createComment(commentDto, principalDetail);
     }
 
+    //대댓글 추가
+    @PostMapping("/renew")
+    public void postReplyComment(@RequestBody CommentDto commentDto, @AuthenticationPrincipal PrincipalDetail principalDetail) {
+        commentMapper.createReplyComment(commentDto, principalDetail);
+    }
+
     //댓글 수정
     @PostMapping("/update")
     public void updateComment(@RequestBody CommentDto commentDto) {

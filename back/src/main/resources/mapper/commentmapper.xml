@@ -27,7 +27,30 @@
         VALUES ( now()
         , now()
         , 0
-        , COALESCE((SELECT MAX(a.comment_group) FROM comment a WHERE board_id = #{Com.board}), -1) + 1, #{Com.contents}
+        , COALESCE((SELECT MAX(a.comment_group) FROM comment a WHERE board_id = #{Com.board}), -1) + 1
+        , #{Com.contents}
+        , 'Y'
+        , #{Com.board}
+        , #{Pri.id}
+        )
+    </insert>
+
+    <!-- 대댓글 추가 -->
+    <insert id="createReplyComment">
+        INSERT INTO comment ( reg_time
+        , update_time
+        , cmlayer
+        , comment_group
+        , contents
+        , status
+        , board_id
+        , user_id
+        )
+        VALUES ( now()
+        , now()
+        , IF((SELECT MIN(a.cmlayer) FROM comment a WHERE board_id = #{Com.board}) = 0, (SELECT MAX(a.cmlayer) FROM comment a WHERE board_id = #{Com.board} AND comment_group = #{Com.commentGroup}) + 1, NULL)
+        , #{Com.commentGroup}
+        , #{Com.contents}
         , 'Y'
         , #{Com.board}
         , #{Pri.id}
