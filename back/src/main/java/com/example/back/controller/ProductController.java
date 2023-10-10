@@ -101,8 +101,8 @@ public class ProductController {
     }
 
     @PutMapping("/lists/pdStatus") //Status만 수정 (N: 상품 없음 C: 거래 완료 R: 예약중 Y: 상품 있음)
-    public ResponseEntity<ProductListDto> updateStatus(@RequestBody Product productDetails) {
-        ProductListDto productListDto = productService.updateStatus(productDetails);
+    public ResponseEntity<ProductListDto> updateStatus(@RequestBody Product productDetails, @AuthenticationPrincipal PrincipalDetail principalDetail) {
+        ProductListDto productListDto = productService.updateStatus(productDetails, principalDetail);
 
         return ResponseEntity.ok(productListDto);
 

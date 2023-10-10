@@ -16,6 +16,8 @@ public interface CommentMapper {
     List<CommentDto> selectComment(Long id); //댓글 조회
 
     void createComment(@Param("Com")CommentDto commentDto, @Param("Pri")PrincipalDetail principalDetail); //댓글 추가
+    
+    void createReplyComment(@Param("Com")CommentDto commentDto, @Param("Pri")PrincipalDetail principalDetail); //대댓글 추가
 
     void updateComment(CommentDto commentDto); //댓글 수정
 

@@ -90,7 +90,7 @@ public class BoardService {
         User user = userRepository.findById(requestBoard.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + requestBoard.getUserId()));
 
-        Region region = regionRepository.findById(requestBoard.getUserId())
+        Region region = regionRepository.findByUserAndAndRegionName(user, requestBoard.getRegion())
                 .orElseThrow(() -> new IllegalArgumentException("Region not found with ID: " + requestBoard.getRegion()));
 
         Board board = Board.builder()

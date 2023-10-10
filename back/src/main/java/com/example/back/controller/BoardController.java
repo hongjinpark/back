@@ -60,7 +60,7 @@ public class BoardController {
     public ResponseEntity<String> boardImg_upload(@ModelAttribute("status") String status,
                                                   @ModelAttribute("bdSubject") String bdSubject,
                                                   @ModelAttribute("bdContents") String bdContents,
-                                                  @ModelAttribute("image") List<MultipartFile> images,
+                                                  @ModelAttribute("images") List<MultipartFile> images,
                                                   @ModelAttribute("region") String region,
                                                   @AuthenticationPrincipal PrincipalDetail principalDetail) {
 
