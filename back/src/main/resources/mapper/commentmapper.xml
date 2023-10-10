@@ -48,7 +48,9 @@
         )
         VALUES ( now()
         , now()
-        , IF((SELECT MIN(a.cmlayer) FROM comment a WHERE board_id = #{Com.board}) = 0, (SELECT MAX(a.cmlayer) FROM comment a WHERE board_id = #{Com.board} AND comment_group = #{Com.commentGroup}) + 1, NULL)
+        , IF((SELECT MIN(a.cmlayer) FROM comment a WHERE board_id = #{Com.board}) = 0
+            , (SELECT MAX(a.cmlayer) FROM comment a WHERE board_id = #{Com.board} AND comment_group = #{Com.commentGroup}) + 1
+            , NULL)
         , #{Com.commentGroup}
         , #{Com.contents}
         , 'Y'
@@ -69,7 +71,9 @@
     <update id="deleteComment">
         UPDATE comment
            SET status = "N"
-         WHERE comment_id = #{id}
+         WHERE IF((SELECT b.cmlayer FROM (SELECT a.cmlayer FROM comment a WHERE a.comment_id = #{id}) AS b) = 0
+                    , comment_group = (SELECT b.comment_group FROM (SELECT a.comment_group FROM comment a WHERE a.comment_id = #{id}) AS b)
+                    , comment_id = #{id});
     </update>
 
 </mapper>
