@@ -1,11 +1,13 @@
 package com.example.back.controller;
 
+import com.example.back.config.auth.PrincipalDetail;
 import com.example.back.dto.NoticeDto;
 import com.example.back.entity.Notice;
 import com.example.back.mapper.NoticeMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,8 +22,8 @@ public class NoticeController {
 
     //공지사항 추가
     @PostMapping("/new")
-    public void postNotice(@RequestBody NoticeDto noticeDto) {
-        noticeMapper.createNotice(noticeDto);
+    public void postNotice(@RequestBody NoticeDto noticeDto, @AuthenticationPrincipal PrincipalDetail principalDetail) {
+        noticeMapper.createNotice(noticeDto, principalDetail);
     }
 
     //공지사항 목록 조회
@@ -39,14 +41,14 @@ public class NoticeController {
 
     //공지사항 수정
     @PostMapping("/update")
-    public void updateNotice(@RequestBody NoticeDto noticeDto) {
-        noticeMapper.updateNotice(noticeDto);
+    public void updateNotice(@RequestBody NoticeDto noticeDto, @AuthenticationPrincipal PrincipalDetail principalDetail) {
+        noticeMapper.updateNotice(noticeDto, principalDetail);
 
     }
 
     //공지사항 삭제
     @DeleteMapping("/{id}")
-    public void deleteNotice(@PathVariable Long id) {
-        noticeMapper.deleteNotice(id);
+    public void deleteNotice(@PathVariable Long id, @AuthenticationPrincipal PrincipalDetail principalDetail) {
+        noticeMapper.deleteNotice(id, principalDetail);
     }
 }
