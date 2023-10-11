@@ -1,6 +1,7 @@
 package com.example.back.config.auth;
 
 import com.example.back.config.auth.userinfo.OAuth2UserInfo;
+import com.example.back.constant.Role;
 import com.example.back.entity.User;
 import lombok.Getter;
 import lombok.ToString;
@@ -119,5 +120,9 @@ public class PrincipalDetail implements UserDetails, OAuth2User {
     //사용자 닉네임
     public String getNickName() {
         return user.getNickname();
+    }
+
+    public Role getRole() {
+        return user.getRole();
     }
 }
