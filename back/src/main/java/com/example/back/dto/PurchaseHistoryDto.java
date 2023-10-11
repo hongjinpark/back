@@ -16,12 +16,8 @@ public class PurchaseHistoryDto {
 
     private Long userId; // user_id
 
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(PrincipalDetail principalDetail) {
-        this.userId = principalDetail.getId();
+    public Long getUserId(PrincipalDetail principalDetail) {
+        return principalDetail.getId();
     }
 
 }

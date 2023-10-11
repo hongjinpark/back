@@ -32,7 +32,7 @@ public class TopicController {
 
     // 관심 주제 상세 조회
     @GetMapping("/{selectProductId}")
-    public ResponseEntity<Map<String, Object>> topic(@PathVariable Long selectProductId){
+    public ResponseEntity<?> topic(@PathVariable Long selectProductId){
         Map<String, Object> result = topicMapper.selectTopicDetail(selectProductId);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }

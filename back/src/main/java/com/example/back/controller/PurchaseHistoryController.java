@@ -22,9 +22,12 @@ public class PurchaseHistoryController {
     // 구매 이력 추가
     @PostMapping("/add")
     public ResponseEntity<String> addPurchaseHistory(@RequestBody PurchaseHistoryDto purchaseHistoryDto, @AuthenticationPrincipal PrincipalDetail principalDetail){
-        purchaseHistoryDto.setUserId(principalDetail);
-        Long userId = purchaseHistoryDto.getUserId();
-        purchaseHistoryMapper.createPurchaseHistory(purchaseHistoryDto, userId);
+
+        Long id = purchaseHistoryDto.getUserId(principalDetail);
+
+        //Long userId = purchaseHistoryDto.getUserId();
+
+        purchaseHistoryMapper.createPurchaseHistory(purchaseHistoryDto, id);
         return new ResponseEntity<>("ok",HttpStatus.OK);
     }
 
