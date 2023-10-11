@@ -115,4 +115,9 @@ public class PrincipalDetail implements UserDetails, OAuth2User {
     public String getName() {
         return null;
     }
+
+    //사용자 닉네임
+    public String getNickName() {
+        return user.getNickname();
+    }
 }

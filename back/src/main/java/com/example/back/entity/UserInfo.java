@@ -13,6 +13,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@Builder
 public class UserInfo extends BaseEntity {
 
     @Id
@@ -20,7 +21,7 @@ public class UserInfo extends BaseEntity {
     @Column(name = "user_info_id")
     private Long id;
 
-    @Column(nullable = false)
+    @Column
     private String status; //N: 탈퇴한 유저 Y: 존재하는 유저
 
     @Column
@@ -29,14 +30,29 @@ public class UserInfo extends BaseEntity {
     @Column(nullable = false)
     private String usrNickName; //닉네임
 
-    @Column
     private String imgUrl; //프로필 이미지
+
+    private String imgName; //프로필 이미지 파일명
+
+    private String oriImgName; //원본 이미지 파일명
 
     @Builder
     public UserInfo(String status, String phoneNum, String usrNickName, String imgUrl) {
         this.status = status;
         this.phoneNum = phoneNum;
         this.usrNickName = usrNickName;
+        this.imgUrl = imgUrl;
+    }
+
+    public void updateUserInfo(String phoneNum, String usrNickName) {
+        this.phoneNum = phoneNum;
+        this.usrNickName = usrNickName;
+    }
+
+    public void updateProfileImg(String oriImgName, String imgName, String imgUrl) {
+
+        this.oriImgName = oriImgName;
+        this.imgName = imgName;
         this.imgUrl = imgUrl;
     }
 }
