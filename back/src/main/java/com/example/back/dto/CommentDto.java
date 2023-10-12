@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotEmpty;
+
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -16,6 +18,7 @@ public class CommentDto {
 
     private String status; //N : 댓글 없음 Y : 댓글 있음
 
+    @NotEmpty(message = "댓글 내용은 필수 입력 값입니다.")
     private String contents; // 댓글 내용
 
     private String cmlayer; //0 : 댓글 1 : 1번째 대댓글(답글) 2 : 2번째 대댓글(답글)
