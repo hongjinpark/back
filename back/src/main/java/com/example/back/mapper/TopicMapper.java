@@ -15,9 +15,9 @@ public interface TopicMapper {
 
     List<Map<String, Object>> selectTopicList(); // 관심 주제 목록 조회
 
-    Map<String, Object> selectTopicDetail(Long selectProductId); // 관심 주제 상세보기 조회
+    Map<String, Object> selectTopicDetail(Long topicId); // 관심 주제 상세보기 조회
 
     void updateTopic(TopicDto topicDto); // 관심 주제 수정
 
-    void deleteTopic(Long selectProductId); // 관심 주제 삭제
+    void deleteTopic(Long topicId); // 관심 주제 삭제
 }
