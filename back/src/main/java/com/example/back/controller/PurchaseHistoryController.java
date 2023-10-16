@@ -41,13 +41,13 @@ public class PurchaseHistoryController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    // 미완성 구매 이력 수정
-    @PutMapping("/{purchaseId}/edit")
-    public ResponseEntity<?> editPurchaseHistory(@PathVariable Long purchaseId, @RequestBody PurchaseHistoryDto purchaseHistoryDto){
-        purchaseHistoryDto.setId(purchaseId);
-        purchaseHistoryMapper.updatePurchaseHistory(purchaseHistoryDto);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
+    // 구매 이력 수정
+//    @PutMapping("/{purchaseId}/edit")
+//    public ResponseEntity<?> editPurchaseHistory(@PathVariable Long purchaseId, @RequestBody PurchaseHistoryDto purchaseHistoryDto){
+//        purchaseHistoryDto.setId(purchaseId);
+//        purchaseHistoryMapper.updatePurchaseHistory(purchaseHistoryDto);
+//        return new ResponseEntity<>(HttpStatus.OK);
+//    }
 
     // 구매 이력 삭제
     @DeleteMapping("/{purchaseHistoryId}")

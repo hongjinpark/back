@@ -17,7 +17,7 @@ public interface PurchaseHistoryMapper {
 
     Map<String, Object> selectPurchaseHistoryDetail(Long purchaseId); // 구매 이력 상세 조회
 
-    void updatePurchaseHistory(PurchaseHistoryDto purchaseHistoryDto); // 구매 이력 수정
+//    void updatePurchaseHistory(PurchaseHistoryDto purchaseHistoryDto); // 구매 이력 수정
 
     void deletePurchaseHistory(Long purchaseHistoryId); // 구매 이력 삭제
 }
