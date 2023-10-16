@@ -29,13 +29,13 @@
         WHERE ph.purchase_history_id = #{purchaseId};
     </select>
 
-    <!-- 미완성 구매 이력 수정 -->
-    <update id="updateTopic" parameterType="TopicDto">
-        UPDATE topic
-        SET topic_name = #{topicName},
-            update_time = now()
-        WHERE select_product_id = #{id}
-    </update>
+    <!-- 구매 이력 수정 필요 없음-->
+<!--    <update id="updateTopic" parameterType="TopicDto">-->
+<!--        UPDATE topic-->
+<!--        SET topic_name = #{topicName},-->
+<!--            update_time = now()-->
+<!--        WHERE select_product_id = #{id}-->
+<!--    </update>-->
 
     <!-- 구매 이력 삭제 -->
     <delete id="deletePurchaseHistory" parameterType="Long">
