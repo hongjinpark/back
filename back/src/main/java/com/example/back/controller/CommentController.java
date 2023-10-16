@@ -6,9 +6,11 @@ import com.example.back.dto.CommentDto;
 import com.example.back.mapper.BoardMapper;
 import com.example.back.mapper.CommentMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -26,19 +28,19 @@ public class CommentController {
 
     //댓글 추가
     @PostMapping("/new")
-    public void postComment(@RequestBody CommentDto commentDto, @AuthenticationPrincipal PrincipalDetail principalDetail) {
+    public void postComment(@Valid @RequestBody CommentDto commentDto, @AuthenticationPrincipal PrincipalDetail principalDetail) {
         commentMapper.createComment(commentDto, principalDetail);
     }
 
     //대댓글 추가
     @PostMapping("/renew")
-    public void postReplyComment(@RequestBody CommentDto commentDto, @AuthenticationPrincipal PrincipalDetail principalDetail) {
+    public void postReplyComment(@Valid @RequestBody CommentDto commentDto, @AuthenticationPrincipal PrincipalDetail principalDetail) {
         commentMapper.createReplyComment(commentDto, principalDetail);
     }
 
     //댓글 수정
     @PostMapping("/update")
-    public void updateComment(@RequestBody CommentDto commentDto) {
+    public void updateComment(@Valid @RequestBody CommentDto commentDto) {
         commentMapper.updateComment(commentDto);
     }
 

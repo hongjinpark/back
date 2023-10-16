@@ -5,6 +5,7 @@ import com.example.back.config.auth.PrincipalDetail;
 import com.example.back.dto.UserDto;
 import com.example.back.dto.UserInfoDto;
 import com.example.back.entity.User;
+import com.example.back.entity.UserInfo;
 import com.example.back.mapper.UserInfoMapper;
 import com.example.back.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -71,9 +73,19 @@ public class UserController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    //계정 정보 수정
-    @PostMapping("/info")
-    public void updateUserInfo(@RequestBody UserInfoDto userInfoDto) {
-        userInfoMapper.updateUserInfo(userInfoDto);
+    //계정 상세 정보 등록
+    @PostMapping("/info/new")
+    public UserInfo createUserInfo(@RequestPart UserInfoDto userInfoDto, @RequestPart MultipartFile profileImg,
+                                   @AuthenticationPrincipal PrincipalDetail principalDetail) throws Exception {
+        return userService.createUserInfo(userInfoDto, profileImg, principalDetail);
     }
+
+    //계정 상세 정보 수정
+    @PutMapping("/info/update")
+    public UserInfo updateUserInfo(@RequestPart UserInfoDto userInfoDto, @RequestPart MultipartFile profileImg,
+                                   @AuthenticationPrincipal PrincipalDetail principalDetail) throws Exception {
+        return userService.updateUserInfo(userInfoDto, profileImg, principalDetail);
+    }
+
+
 }
