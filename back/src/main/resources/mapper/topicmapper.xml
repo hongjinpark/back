@@ -7,7 +7,7 @@
     <!-- 관심 주제 추가 -->
     <insert id="createTopic" parameterType="TopicDto">
         INSERT INTO topic (reg_time, update_time, status, topic_name)
-        VALUES (now(), now(), "Y", #{topicName})
+        VALUES (now(), now(), 'Y', #{topicName})
     </insert>
 
     <!-- 관심 주제 목록 조회 -->
@@ -20,7 +20,7 @@
     <select id="selectTopicDetail" resultType="HashMap" parameterType="Long">
         SELECT *
         FROM topic
-        WHERE select_product_id = #{selectProductId}
+        WHERE topic_id = #{topicId}
     </select>
 
     <!-- 관심 주제 수정 -->
@@ -28,13 +28,13 @@
         UPDATE topic
             SET topic_name = #{topicName},
                 update_time = now()
-        WHERE select_product_id = #{id}
+        WHERE topic_id = #{id}
     </update>
 
     <!-- 관심 주제 삭제 -->
     <delete id="deleteTopic" parameterType="Long">
         DELETE FROM topic
-        WHERE select_product_id = #{selectProductId}
+        WHERE topic_id = #{topicId}
     </delete>
 
 
