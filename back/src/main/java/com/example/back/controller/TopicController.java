@@ -31,17 +31,12 @@ public class TopicController {
     }
 
     // 관심 주제 상세 조회
-<<<<<<< HEAD
     @GetMapping("/{topicId}")
-    public ResponseEntity<?> topic(@PathVariable Long topicId){ 
-        Map<String, Object> result = topicMapper.selectTopicDetail(topicId);
-=======
-    @GetMapping("/{selectProductId}")
-    public ResponseEntity<?> topic(@PathVariable Long selectProductId){
-        Map<String, Object> result = topicMapper.selectTopicDetail(selectProductId);
->>>>>>> origin/master
-        return new ResponseEntity<>(result, HttpStatus.OK);
+    public ResponseEntity<?> topic(@PathVariable Long topicId){
+            Map<String, Object> result = topicMapper.selectTopicDetail(topicId);
+            return new ResponseEntity<>(result, HttpStatus.OK);
     }
+
 
     // 관심 주제 수정
     @PostMapping("/edit/{topicId}")
