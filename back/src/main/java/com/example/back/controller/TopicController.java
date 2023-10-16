@@ -31,23 +31,23 @@ public class TopicController {
     }
 
     // 관심 주제 상세 조회
-    @GetMapping("/{selectProductId}")
-    public ResponseEntity<Map<String, Object>> topic(@PathVariable Long selectProductId){
-        Map<String, Object> result = topicMapper.selectTopicDetail(selectProductId);
+    @GetMapping("/{topicId}")
+    public ResponseEntity<?> topic(@PathVariable Long topicId){ 
+        Map<String, Object> result = topicMapper.selectTopicDetail(topicId);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     // 관심 주제 수정
-    @PostMapping("/{selectProductId}/edit")
-    public ResponseEntity<?> editTopic(@PathVariable Long selectProductId, @RequestBody TopicDto topicDto){
-        topicDto.setId(selectProductId);
+    @PostMapping("/edit/{topicId}")
+    public ResponseEntity<?> editTopic(@PathVariable Long topicId, @RequestBody TopicDto topicDto){
+        topicDto.setId(topicId);
         topicMapper.updateTopic(topicDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     // 관심 주제 삭제
-    @DeleteMapping("/{selectProductId}")
-    public void deleteTopic(@PathVariable Long selectProductId){
-        topicMapper.deleteTopic(selectProductId);
+    @DeleteMapping("/{topicId}")
+    public void deleteTopic(@PathVariable Long topicId){
+        topicMapper.deleteTopic(topicId);
     }
 }
