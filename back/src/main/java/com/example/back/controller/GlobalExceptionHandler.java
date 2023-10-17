@@ -71,6 +71,10 @@ public class GlobalExceptionHandler {
                     errorCode = ValidErrorCode.MIN_VALUE.getErrorCode();
                     status = ValidErrorCode.MIN_VALUE.getStatus();
                     break;
+                case "NotNull":
+                    errorCode = ValidErrorCode.NULL_PARAMETER.getErrorCode();
+                    status = ValidErrorCode.NULL_PARAMETER.getStatus();
+                    break;
             }
         }
 
