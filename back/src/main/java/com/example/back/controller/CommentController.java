@@ -44,7 +44,7 @@ public class CommentController {
         commentMapper.updateComment(commentDto);
     }
 
-    //댓굴 삭제
+    //댓글 삭제
     @PostMapping("/delete")
     public void deleteComment(@RequestBody CommentDto commentDto) {
         commentMapper.deleteComment(commentDto);
