@@ -1,4 +1,4 @@
-package com.example.back.service;
+package com.example.back.jpa.service;
 
 import com.example.back.dto.AttentionDto;
 import com.example.back.dto.RegionDto;

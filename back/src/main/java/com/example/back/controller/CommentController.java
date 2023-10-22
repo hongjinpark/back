@@ -1,12 +1,9 @@
 package com.example.back.controller;
 
 import com.example.back.config.auth.PrincipalDetail;
-import com.example.back.dto.BoardDto;
 import com.example.back.dto.CommentDto;
-import com.example.back.mapper.BoardMapper;
-import com.example.back.mapper.CommentMapper;
+import com.example.back.mybatis.mapper.CommentMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 

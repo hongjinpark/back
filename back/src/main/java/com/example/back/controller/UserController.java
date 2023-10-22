@@ -6,8 +6,8 @@ import com.example.back.dto.UserDto;
 import com.example.back.dto.UserInfoDto;
 import com.example.back.entity.User;
 import com.example.back.entity.UserInfo;
-import com.example.back.mapper.UserInfoMapper;
-import com.example.back.service.UserService;
+import com.example.back.mybatis.mapper.UserInfoMapper;
+import com.example.back.jpa.service.UserService;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpHeaders;

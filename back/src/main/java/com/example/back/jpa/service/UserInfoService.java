@@ -1,4 +1,4 @@
-package com.example.back.service;
+package com.example.back.jpa.service;
 
 
 import com.example.back.entity.UserInfo;

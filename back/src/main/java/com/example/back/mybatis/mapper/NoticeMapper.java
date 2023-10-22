@@ -1,4 +1,4 @@
-package com.example.back.mapper;
+package com.example.back.mybatis.mapper;
 
 import com.example.back.config.auth.PrincipalDetail;
 import com.example.back.dto.NoticeDto;

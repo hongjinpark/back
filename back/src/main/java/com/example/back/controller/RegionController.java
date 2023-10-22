@@ -2,7 +2,7 @@ package com.example.back.controller;
 
 import com.example.back.config.auth.PrincipalDetail;
 import com.example.back.dto.RegionDto;
-import com.example.back.service.RegionService;
+import com.example.back.jpa.service.RegionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

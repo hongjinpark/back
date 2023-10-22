@@ -1,4 +1,4 @@
-package com.example.back.service;
+package com.example.back.jpa.service;
 
 
 import lombok.extern.java.Log;

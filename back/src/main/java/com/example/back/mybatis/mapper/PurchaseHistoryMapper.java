@@ -1,4 +1,4 @@
-package com.example.back.mapper;
+package com.example.back.mybatis.mapper;
 
 import com.example.back.dto.PurchaseHistoryDto;
 import org.apache.ibatis.annotations.Mapper;

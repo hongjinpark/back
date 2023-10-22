@@ -1,4 +1,4 @@
-package com.example.back.service;
+package com.example.back.jpa.service;
 
 import com.example.back.config.auth.PrincipalDetail;
 import com.example.back.dto.*;
@@ -7,22 +7,18 @@ import com.example.back.entity.ProductImage;
 import com.example.back.entity.Region;
 import com.example.back.entity.User;
 import com.example.back.entity.*;
-import com.example.back.mapper.PurchaseHistoryMapper;
+import com.example.back.mybatis.mapper.PurchaseHistoryMapper;
 import com.example.back.repository.ProductRepository;
 import com.example.back.repository.RegionRepository;
 import com.example.back.repository.SelectProductRepository;
 import com.example.back.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
-import org.springframework.data.domain.SliceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;

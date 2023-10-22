@@ -1,9 +1,8 @@
 package com.example.back.controller;
 
 import com.example.back.dto.TopicDto;
-import com.example.back.mapper.TopicMapper;
+import com.example.back.mybatis.mapper.TopicMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

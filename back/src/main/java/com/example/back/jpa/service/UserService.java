@@ -1,4 +1,4 @@
-package com.example.back.service;
+package com.example.back.jpa.service;
 
 
 import com.example.back.config.JwtProvider;
@@ -7,7 +7,7 @@ import com.example.back.dto.UserDto;
 import com.example.back.dto.UserInfoDto;
 import com.example.back.entity.User;
 import com.example.back.entity.UserInfo;
-import com.example.back.mapper.UserInfoMapper;
+import com.example.back.mybatis.mapper.UserInfoMapper;
 import com.example.back.repository.UserInfoRepository;
 import com.example.back.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

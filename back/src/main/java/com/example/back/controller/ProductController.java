@@ -3,10 +3,9 @@ package com.example.back.controller;
 import com.example.back.config.auth.PrincipalDetail;
 import com.example.back.dto.*;
 import com.example.back.entity.Product;
-import com.example.back.service.ProductService;
+import com.example.back.jpa.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FileUtils;
-import org.eclipse.jdt.internal.compiler.batch.ClasspathDirectory;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -22,7 +21,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController

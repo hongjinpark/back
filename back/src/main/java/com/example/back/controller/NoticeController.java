@@ -2,8 +2,7 @@ package com.example.back.controller;
 
 import com.example.back.config.auth.PrincipalDetail;
 import com.example.back.dto.NoticeDto;
-import com.example.back.entity.Notice;
-import com.example.back.mapper.NoticeMapper;
+import com.example.back.mybatis.mapper.NoticeMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
